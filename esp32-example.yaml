@@ -1,0 +1,491 @@
+substitutions:
+  name: lumentree-modbus
+  device_description: "Monitor and control a Lumentree inverter via RS232 (Modbus)"
+  tx_pin: GPIO16
+  rx_pin: GPIO17
+
+esphome:
+  name: ${name}
+  comment: ${device_description}
+  min_version: 2024.6.0
+  project:
+    name: "syssi.esphome-lumentree"
+    version: 1.0.0
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: esp-idf
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
+
+logger:
+  level: INFO
+
+# If you use Home Assistant please remove this `mqtt` section and uncomment the `api` component!
+# The native API has many advantages over MQTT: https://esphome.io/components/api.html#advantages-over-mqtt
+mqtt:
+  broker: !secret mqtt_host
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  id: mqtt_client
+
+# api:
+
+uart:
+  - id: uart_0
+    baud_rate: 9600
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+
+modbus:
+  - id: modbus0
+    uart_id: uart_0
+    send_wait_time: 200ms
+
+modbus_controller:
+  - id: lumentree0
+    address: 0x01
+    modbus_id: modbus0
+    command_throttle: 200ms
+    update_interval: 10s
+
+time:
+  - platform: sntp
+
+sensor:
+  - platform: total_daily_energy
+    name: "${name} PV energy today"
+    restore: true
+    icon: mdi:counter
+    power_id: lumentree0_pv_power
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+  - platform: template
+    name: "${name} battery discharging power"
+    id: lumentree0_discharging_power
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    icon: mdi:battery-arrow-down
+    # Gets updated on value of lumentree0_battery_power
+    update_interval: never
+    lambda: |-
+      if (isnan(id(lumentree0_battery_power).state)) {
+        return {};
+      }
+      auto power = id(lumentree0_battery_power).state;
+      return (power < 0.0f) ? -power : 0.0f;
+
+  - platform: template
+    name: "${name} battery charging power"
+    id: lumentree0_charging_power
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    icon: mdi:battery-charging
+    # Gets updated on value of lumentree0_battery_power
+    update_interval: never
+    lambda: |-
+      if (isnan(id(lumentree0_battery_power).state)) {
+        return {};
+      }
+      auto power = id(lumentree0_battery_power).state;
+      return (power > 0.0f) ? power : 0.0f;
+
+  # === Core Lumentree Modbus Registers ===
+
+  # AC Voltage                                   0.1V     Int   70 1 R
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} ac voltage"
+    address: 70
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    icon: mdi:sine-wave
+    filters:
+      - multiply: 0.1
+
+  # Temperature                                  0.1°C    Int   94 1 R
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} temperature"
+    address: 94
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    icon: mdi:thermometer
+    filters:
+      - multiply: 0.1
+
+  # Read Power Output                            0.1W     Int   107 1 R
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} ac power"
+    id: lumentree0_ac_power
+    address: 107
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 1
+    icon: mdi:power-plug
+    filters:
+      - multiply: 0.1
+
+  # DC Voltage                                   0.1V     Int   109 1 R
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} dc voltage"
+    address: 109
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 1
+    icon: mdi:current-dc
+    filters:
+      - multiply: 0.1
+
+  # === Extended Lumentree Status Registers (from BLE implementation) ===
+
+  # Battery Voltage                              0.01V    Int   11 1 R (0x0B)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} battery voltage"
+    address: 11
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:battery
+    filters:
+      - multiply: 0.01
+
+  # Battery Current                              0.01A    Int   12 1 R (0x0C)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} battery current"
+    address: 12
+    register_type: holding
+    value_type: S_WORD
+    unit_of_measurement: "A"
+    device_class: current
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:current-dc
+    filters:
+      - multiply: 0.01
+
+  # PV Input Voltage                             1V       Int   20 1 R (0x14)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} pv voltage"
+    address: 20
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:solar-power
+
+  # PV Input Power                               1W       Int   22 1 R (0x16)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} pv power"
+    id: lumentree0_pv_power
+    address: 22
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:solar-power
+
+  # Battery State of Charge                      1%       Int   50 1 R (0x32)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} battery soc"
+    address: 50
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:battery
+
+  # Grid Input Power (signed)                    1W       Int   53 1 R (0x35)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} grid power"
+    id: lumentree0_grid_power
+    address: 53
+    register_type: holding
+    value_type: S_WORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:transmission-tower
+
+  # Battery Power (signed)                       1W       Int   61 1 R (0x3D)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} battery power"
+    id: lumentree0_battery_power
+    address: 61
+    register_type: holding
+    value_type: S_WORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:battery
+    on_value:
+      - component.update: lumentree0_discharging_power
+      - component.update: lumentree0_charging_power
+
+  # Family Load Power                            1W       Int   67 1 R (0x43)
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} load power"
+    address: 67
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:home-lightning-bolt
+
+  # === Configuration Registers (101-157) ===
+
+  # Equalization Voltage                         V*100    2B    101 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} equalization voltage"
+    address: 101
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    accuracy_decimals: 2
+    icon: mdi:battery-high
+    filters:
+      - multiply: 0.01
+
+  # Charging Target Voltage                      V*100    2B    102 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} charging target voltage"
+    address: 102
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    accuracy_decimals: 2
+    icon: mdi:battery-charging
+    filters:
+      - multiply: 0.01
+
+  # Float Charge Voltage                         V*100    2B    103 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} float charge voltage"
+    address: 103
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "V"
+    device_class: voltage
+    accuracy_decimals: 2
+    icon: mdi:battery
+    filters:
+      - multiply: 0.01
+
+  # Battery Capacity                             Ah       1B    104 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} battery capacity"
+    address: 104
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "Ah"
+    accuracy_decimals: 0
+    icon: mdi:battery-outline
+
+binary_sensor:
+  # Battery Connected Status (based on register 37, 2=No Battery)
+  - platform: template
+    name: "${name} battery connected"
+    lambda: |-
+      // This would need actual register 37 reading - simplified for now
+      return true;
+    icon: mdi:battery-check
+
+  # Grid Connected Status (based on register 70, >=7 Connected)
+  - platform: template
+    name: "${name} grid connected"
+    lambda: |-
+      if (id(lumentree0_ac_power).has_state()) {
+        return id(lumentree0_ac_power).state > 0;
+      }
+      return false;
+    icon: mdi:transmission-tower
+
+text_sensor:
+  # Device Model (would need register 3-7 reading)
+  - platform: template
+    name: "${name} device model"
+    lambda: |-
+      return std::string("Lumentree Modbus");
+    icon: mdi:information
+
+  # Operation Mode (simplified)
+  - platform: template
+    name: "${name} operation mode"
+    lambda: |-
+      if (id(lumentree0_pv_power).has_state() && id(lumentree0_pv_power).state > 0) {
+        return std::string("Solar");
+      } else if (id(lumentree0_grid_power).has_state() && id(lumentree0_grid_power).state > 0) {
+        return std::string("Grid");
+      } else {
+        return std::string("Battery");
+      }
+    icon: mdi:state-machine
+
+number:
+  # Set Power Output                             W        40 1 W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} power output"
+    use_write_multiple: true
+    address: 40
+    register_type: holding
+    value_type: U_WORD
+    min_value: 0.0
+    max_value: 2000.0
+    step: 1
+    unit_of_measurement: "W"
+    icon: mdi:solar-power
+
+  # Equalization Voltage Setting                V*100    2B    101 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} set equalization voltage"
+    use_write_multiple: true
+    address: 101
+    register_type: holding
+    value_type: U_WORD
+    min_value: 48.0
+    max_value: 60.0
+    step: 0.01
+    unit_of_measurement: "V"
+    icon: mdi:battery-high
+    lambda: "return x * 0.01f;"
+    write_lambda: |-
+      return x * 100.0f;
+
+  # Charging Target Voltage Setting             V*100    2B    102 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} set charging voltage"
+    use_write_multiple: true
+    address: 102
+    register_type: holding
+    value_type: U_WORD
+    min_value: 48.0
+    max_value: 58.0
+    step: 0.01
+    unit_of_measurement: "V"
+    icon: mdi:battery-charging
+    lambda: "return x * 0.01f;"
+    write_lambda: |-
+      return x * 100.0f;
+
+  # Float Charge Voltage Setting                V*100    2B    103 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} set float voltage"
+    use_write_multiple: true
+    address: 103
+    register_type: holding
+    value_type: U_WORD
+    min_value: 48.0
+    max_value: 56.0
+    step: 0.01
+    unit_of_measurement: "V"
+    icon: mdi:battery
+    lambda: "return x * 0.01f;"
+    write_lambda: |-
+      return x * 100.0f;
+
+  # Battery Capacity Setting                    Ah       1B    104 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} set battery capacity"
+    use_write_multiple: true
+    address: 104
+    register_type: holding
+    value_type: U_WORD
+    min_value: 50.0
+    max_value: 1000.0
+    step: 1
+    unit_of_measurement: "Ah"
+    icon: mdi:battery-outline
+
+select:
+  # AC Output Frequency                          0=50Hz, 1=60Hz  123 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} ac frequency"
+    use_write_multiple: true
+    address: 123
+    value_type: U_WORD
+    icon: mdi:cosine-wave
+    optionsmap:
+      "50Hz": 0
+      "60Hz": 1
+
+switch:
+  # Charge from AC Enable/Disable                0/1      120 1 R/W
+  - platform: modbus_controller
+    modbus_controller_id: lumentree0
+    name: "${name} ac charging enable"
+    use_write_multiple: true
+    address: 120
+    register_type: holding
+    bitmask: 1
+    icon: mdi:battery-charging-outline
+
+button:
+  # Factory Reset Battery Settings (writes 5 zeros to register 100)
+  - platform: template
+    name: "${name} factory reset battery"
+    icon: mdi:factory
+    on_press:
+      then:
+        - lambda: |-
+            auto cmd = esphome::modbus_controller::ModbusCommandItem::create_write_multiple_command(id(lumentree0), 100, 5, {0, 0, 0, 0, 0});
+            id(lumentree0)->queue_command(cmd);

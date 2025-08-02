@@ -1,0 +1,6 @@
+<<: !include esp32-ble-example-debug.yaml
+
+lumentree_ble:
+  - ble_client_id: client0
+    id: inverter0
+    update_interval: 10s

@@ -1,0 +1,53 @@
+substitutions:
+  name: lumentree-test
+  external_components_source: ../components
+
+esphome:
+  name: ${name}
+  min_version: 2024.6.0
+
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: esp32c6
+  framework:
+    type: esp-idf
+
+external_components:
+  - source: ${external_components_source}
+    refresh: 0s
+
+wifi:
+  ssid: "MySSID"
+  password: "MyPassword"
+
+logger:
+
+api:
+
+esp32_ble_tracker:
+
+ble_client:
+  - mac_address: "AA:BB:CC:DD:EE:FF"
+    id: client0
+
+lumentree_ble:
+  - ble_client_id: client0
+    id: inverter0
+
+binary_sensor:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    grid_connected:
+      name: "Grid Connected"
+
+sensor:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    battery_voltage:
+      name: "Battery Voltage"
+
+text_sensor:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    device_model:
+      name: "Device Model"
