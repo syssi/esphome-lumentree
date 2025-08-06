@@ -355,28 +355,28 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
 
     switch (register_address) {
       case 101:  // Equalization Voltage
-        ESP_LOGI(TAG, "Equalization Voltage: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Equalization Voltage: %.2f V", register_value * 0.01f);
         break;
       case 102:  // Charging Target Voltage
-        ESP_LOGI(TAG, "Charging Target Voltage: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Charging Target Voltage: %.2f V", register_value * 0.01f);
         break;
       case 103:  // Float Charge Voltage
-        ESP_LOGI(TAG, "Float Charge Voltage: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Float Charge Voltage: %.2f V", register_value * 0.01f);
         break;
       case 104:  // Battery Capacity
         ESP_LOGI(TAG, "Battery Capacity: %d Ah", register_value);
         break;
       case 114:  // Low Voltage Cutoff
-        ESP_LOGI(TAG, "Low Voltage Cutoff: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Low Voltage Cutoff: %.2f V", register_value * 0.01f);
         break;
       case 115:  // Battery Voltage Restore
-        ESP_LOGI(TAG, "Battery Voltage Restore: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Battery Voltage Restore: %.2f V", register_value * 0.01f);
         break;
       case 117:  // Target Voltage 5
-        ESP_LOGI(TAG, "Target Voltage 5: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 5: %.2f V", register_value * 0.01f);
         break;
       case 118:  // Target Voltage 6
-        ESP_LOGI(TAG, "Target Voltage 6: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 6: %.2f V", register_value * 0.01f);
         break;
       case 120:  // Charge from AC
         ESP_LOGI(TAG, "Charge from AC: %s", register_value == 1 ? "Enabled" : "Disabled");
@@ -412,16 +412,16 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
         ESP_LOGI(TAG, "Starter Generator: %s", register_value == 1 ? "Enabled" : "Disabled");
         break;
       case 153:  // Target Voltage 1
-        ESP_LOGI(TAG, "Target Voltage 1: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 1: %.2f V", register_value * 0.01f);
         break;
       case 154:  // Target Voltage 2
-        ESP_LOGI(TAG, "Target Voltage 2: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 2: %.2f V", register_value * 0.01f);
         break;
       case 155:  // Target Voltage 3
-        ESP_LOGI(TAG, "Target Voltage 3: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 3: %.2f V", register_value * 0.01f);
         break;
       case 156:  // Target Voltage 4
-        ESP_LOGI(TAG, "Target Voltage 4: %.2f V", register_value / 100.0f);
+        ESP_LOGI(TAG, "Target Voltage 4: %.2f V", register_value * 0.01f);
         break;
       case 157:  // Maximum Discharge Current
         ESP_LOGI(TAG, "Maximum Discharge Current: %d A", register_value);
