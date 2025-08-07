@@ -10,8 +10,7 @@ static const char *const TAG = "lumentree_ble.switch";
 void LumentreeSwitch::dump_config() { LOG_SWITCH("", "LumentreeBle Switch", this); }
 
 void LumentreeSwitch::write_state(bool state) {
-  uint16_t register_value = state ? 0x0001 : 0x0000;
-  this->parent_->write_register(this->holding_register_, register_value);
+  this->parent_->write_register(this->holding_register_, state ? 0x0001 : 0x0000);
 }
 
 }  // namespace lumentree_ble

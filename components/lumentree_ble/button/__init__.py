@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import button
 import esphome.config_validation as cv
-from esphome.const import CONF_ID
+from esphome.const import CONF_FACTORY_RESET, CONF_ID
 
 from .. import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
@@ -9,7 +9,6 @@ DEPENDENCIES = ["lumentree_ble"]
 
 CODEOWNERS = ["@syssi"]
 
-CONF_FACTORY_RESET = "factory_reset"
 CONF_RESTART_DEVICE = "restart_device"
 
 ICON_FACTORY_RESET = "mdi:factory"

@@ -10,8 +10,7 @@ static const char *const TAG = "lumentree_ble.number";
 void LumentreeNumber::dump_config() { LOG_NUMBER("", "LumentreeBle Number", this); }
 
 void LumentreeNumber::control(float value) {
-  uint16_t register_value = (uint16_t) (value / this->factor_);
-  this->parent_->write_register(this->holding_register_, register_value);
+  this->parent_->write_register(this->holding_register_, (uint16_t) (value / this->factor_));
 }
 
 }  // namespace lumentree_ble
