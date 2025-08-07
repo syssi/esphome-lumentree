@@ -112,3 +112,34 @@ text_sensor:
       name: "${name} device model"
     operation_mode:
       name: "${name} operation mode"
+
+button:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    factory_reset:
+      name: "${name} factory reset"
+    restart_device:
+      name: "${name} restart device"
+
+number:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    power_output_setting:
+      name: "${name} power output setting"
+    equalization_voltage_setting:
+      name: "${name} equalization voltage setting"
+    charging_target_voltage_setting:
+      name: "${name} charging target voltage setting"
+    float_charge_voltage_setting:
+      name: "${name} float charge voltage setting"
+    battery_capacity_setting:
+      name: "${name} battery capacity setting"
+      unit_of_measurement: "Ah"
+
+switch:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    ac_charging:
+      name: "${name} ac charging"
+    output:
+      name: "${name} output"
