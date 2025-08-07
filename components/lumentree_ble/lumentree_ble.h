@@ -96,7 +96,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
 
   void assemble(const uint8_t *data, uint16_t length);
   void write_register(uint8_t register_address, uint16_t value);
-  void send_command(const std::vector<uint8_t> &frame);
+  void send_command(const std::vector<uint8_t> &payload);
   void read_registers(uint16_t start_register, uint16_t register_count);
 
  protected:
