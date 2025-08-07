@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import switch
 import esphome.config_validation as cv
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_OUTPUT
 
 from .. import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
@@ -10,7 +10,7 @@ DEPENDENCIES = ["lumentree_ble"]
 CODEOWNERS = ["@syssi"]
 
 CONF_AC_CHARGING = "ac_charging"
-CONF_OUTPUT = "output"
+# CONF_OUTPUT = "output"
 
 ICON_AC_CHARGING = "mdi:battery-charging-outline"
 ICON_OUTPUT = "mdi:power"
