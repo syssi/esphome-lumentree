@@ -176,7 +176,13 @@ void LumentreeBle::update() {
   this->send_next_request_();
 }
 
-void LumentreeBle::send_command(const std::vector<uint8_t> &frame) {
+void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
+  std::vector<uint8_t> frame = payload;
+
+  uint16_t crc = crc16(frame.data(), frame.size(), 0xFFFF, 0xa001, false, false);
+  frame.push_back(crc & 0xFF);
+  frame.push_back((crc >> 8) & 0xFF);
+
   ESP_LOGVV(TAG, "[%s] Command frame: %s", this->parent_->address_str().c_str(), format_hex_pretty(frame).c_str());
 
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
@@ -188,22 +194,18 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &frame) {
 }
 
 void LumentreeBle::read_registers(uint16_t start_register, uint16_t register_count) {
-  std::vector<uint8_t> frame;
-  frame.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
-  frame.push_back(LUMENTREE_MODBUS_FUNCTION_READ);
-  frame.push_back((start_register >> 8) & 0xFF);
-  frame.push_back(start_register & 0xFF);
-  frame.push_back((register_count >> 8) & 0xFF);
-  frame.push_back(register_count & 0xFF);
-
-  uint16_t crc = crc16(frame.data(), frame.size(), 0xFFFF, 0xa001, false, false);
-  frame.push_back(crc & 0xFF);
-  frame.push_back((crc >> 8) & 0xFF);
+  std::vector<uint8_t> payload;
+  payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
+  payload.push_back(LUMENTREE_MODBUS_FUNCTION_READ);
+  payload.push_back((start_register >> 8) & 0xFF);
+  payload.push_back(start_register & 0xFF);
+  payload.push_back((register_count >> 8) & 0xFF);
+  payload.push_back(register_count & 0xFF);
 
   ESP_LOGD(TAG, "[%s] Reading Holding Registers: start=0x%04X, count=%d", this->parent_->address_str().c_str(),
            start_register, register_count);
 
-  this->send_command(frame);
+  this->send_command(payload);
 }
 
 void LumentreeBle::decode_(const std::vector<uint8_t> &data) {
@@ -542,19 +544,15 @@ void LumentreeBle::send_next_request_() {
 void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
   ESP_LOGI(TAG, "Writing register 0x%02X with value 0x%04X", register_address, value);
 
-  std::vector<uint8_t> frame;
-  frame.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
-  frame.push_back(0x06);
-  frame.push_back(0x00);
-  frame.push_back(register_address);
-  frame.push_back((value >> 8) & 0xFF);
-  frame.push_back(value & 0xFF);
+  std::vector<uint8_t> payload;
+  payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
+  payload.push_back(0x06);
+  payload.push_back(0x00);
+  payload.push_back(register_address);
+  payload.push_back((value >> 8) & 0xFF);
+  payload.push_back(value & 0xFF);
 
-  uint16_t crc = crc16(frame.data(), frame.size(), 0xFFFF, 0xa001, false, false);
-  frame.push_back(crc & 0xFF);
-  frame.push_back((crc >> 8) & 0xFF);
-
-  this->send_command(frame);
+  this->send_command(payload);
 }
 
 }  // namespace lumentree_ble
