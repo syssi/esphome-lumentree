@@ -160,5 +160,5 @@ switch:
     lumentree_ble_id: inverter0
     ac_charging:
       name: "${name} ac charging"
-    output_enable:
-      name: "${name} output enable"
+    output:
+      name: "${name} output"

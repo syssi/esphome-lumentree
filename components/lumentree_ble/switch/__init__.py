@@ -10,14 +10,14 @@ DEPENDENCIES = ["lumentree_ble"]
 CODEOWNERS = ["@syssi"]
 
 CONF_AC_CHARGING = "ac_charging"
-CONF_OUTPUT_ENABLE = "output_enable"
+CONF_OUTPUT = "output"
 
 ICON_AC_CHARGING = "mdi:battery-charging-outline"
-ICON_OUTPUT_ENABLE = "mdi:power"
+ICON_OUTPUT = "mdi:power"
 
 SWITCHES = {
     CONF_AC_CHARGING: 120,
-    CONF_OUTPUT_ENABLE: 121,
+    CONF_OUTPUT: 121,
 }
 
 LumentreeSwitch = lumentree_ble_ns.class_(
@@ -30,9 +30,9 @@ CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
             LumentreeSwitch,
             icon=ICON_AC_CHARGING,
         ).extend(cv.COMPONENT_SCHEMA),
-        cv.Optional(CONF_OUTPUT_ENABLE): switch.switch_schema(
+        cv.Optional(CONF_OUTPUT): switch.switch_schema(
             LumentreeSwitch,
-            icon=ICON_OUTPUT_ENABLE,
+            icon=ICON_OUTPUT,
         ).extend(cv.COMPONENT_SCHEMA),
     }
 )

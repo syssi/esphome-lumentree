@@ -70,13 +70,11 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
     operation_mode_text_sensor_ = operation_mode_text_sensor;
   }
 
-  // Button setters
   void set_factory_reset_button(button::Button *factory_reset_button) { factory_reset_button_ = factory_reset_button; }
   void set_restart_device_button(button::Button *restart_device_button) {
     restart_device_button_ = restart_device_button;
   }
 
-  // Number setters
   void set_power_output_setting_number(number::Number *power_output_setting_number) {
     power_output_setting_number_ = power_output_setting_number;
   }
@@ -93,9 +91,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
     battery_capacity_setting_number_ = battery_capacity_setting_number;
   }
 
-  // Switch setters
   void set_ac_charging_switch(switch_::Switch *ac_charging_switch) { ac_charging_switch_ = ac_charging_switch; }
-  void set_output_enable_switch(switch_::Switch *output_enable_switch) { output_enable_switch_ = output_enable_switch; }
+  void set_output_switch(switch_::Switch *output_switch) { output_switch_ = output_switch; }
 
   void assemble(const uint8_t *data, uint16_t length);
   void write_register(uint8_t register_address, uint16_t value);
@@ -126,20 +123,17 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   text_sensor::TextSensor *device_model_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;
 
-  // Button members
   button::Button *factory_reset_button_;
   button::Button *restart_device_button_;
 
-  // Number members
   number::Number *power_output_setting_number_;
   number::Number *equalization_voltage_setting_number_;
   number::Number *charging_target_voltage_setting_number_;
   number::Number *float_charge_voltage_setting_number_;
   number::Number *battery_capacity_setting_number_;
 
-  // Switch members
   switch_::Switch *ac_charging_switch_;
-  switch_::Switch *output_enable_switch_;
+  switch_::Switch *output_switch_;
 
   uint16_t char_handle_;
   std::vector<uint8_t> frame_buffer_;
