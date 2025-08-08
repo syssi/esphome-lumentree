@@ -160,7 +160,7 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Device Type Image", this->device_type_image_sensor_);
   LOG_SENSOR("  ", "Battery Status", this->battery_status_sensor_);
   LOG_SENSOR("  ", "Grid Connection Status", this->grid_connection_status_sensor_);
-  LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
+  LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
 }
 
@@ -274,17 +274,21 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
   uint16_t device_type = lumentree_get_16bit(5);
   ESP_LOGI(TAG, "Device Type Code: 0x%04X", device_type);
 
-  // 0x03-0x07: Device Model Name (5 registers, ASCII)
-  std::string device_model(data.begin() + 7, data.begin() + 17);
-  device_model.erase(device_model.find_last_not_of(" \0") + 1);
-  ESP_LOGI(TAG, "Device Model: %s", device_model.c_str());
-  this->publish_state_(this->device_model_text_sensor_, device_model.empty() ? "Unknown" : device_model);
+  // 0x03-0x07: Serial Number (5 registers, ASCII)
+  std::string serial_number(data.begin() + 7, data.begin() + 17);
+  serial_number.erase(serial_number.find_last_not_of(" \0") + 1);
+  ESP_LOGI(TAG, "Serial Number: %s", serial_number.c_str());
+  this->publish_state_(this->serial_number_text_sensor_, serial_number.empty() ? "Unknown" : serial_number);
 
   // Register offsets in the data array (3 bytes header + register_index * 2)
   for (uint8_t register_index = 0; register_index < byte_count / 2; register_index++) {
     uint16_t register_value = lumentree_get_16bit(3 + register_index * 2);
 
     switch (register_index) {
+      case 8:  // 0x08: Power Level (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW)
+        ESP_LOGI(TAG, "Power Level: %d", register_value);
+        // Note: This determines device model (SUNT-5.5KW-P, SUNT-4.0KW-US-P, SUNT-6.0KW-P, etc.)
+        break;
       case 11:  // 0x0B: Battery Voltage
         this->publish_state_(this->battery_voltage_sensor_, register_value * 0.01f);
         break;

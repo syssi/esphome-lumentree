@@ -107,7 +107,7 @@ For comprehensive data collection, use a multi-request approach:
 
 | Register | Name | Type | Scaling | Description |
 |----------|------|------|---------|-------------|
-| 0-7 | Device ID/Model | Read | Direct | Device identification string |
+| 0-7 | Device ID/Serial Number | Read | Direct | Device identification string |
 | 8 | Product Model | Read | Direct | Device model identifier |
 | 11 | Battery Voltage | Read | ÷100 | Battery voltage in volts |
 | 12 | Discharge Current | Read | ÷100 | Battery discharge current in amperes |

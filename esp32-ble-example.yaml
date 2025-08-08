@@ -108,8 +108,8 @@ sensor:
 text_sensor:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
-    device_model:
-      name: "${name} device model"
+    serial_number:
+      name: "${name} serial number"
     operation_mode:
       name: "${name} operation mode"
 

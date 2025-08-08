@@ -7,13 +7,13 @@ from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_b
 
 DEPENDENCIES = ["lumentree_ble"]
 
-CONF_DEVICE_MODEL = "device_model"
+CONF_SERIAL_NUMBER = "serial_number"
 CONF_OPERATION_MODE = "operation_mode"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
 TEXT_SENSORS = {
-    CONF_DEVICE_MODEL: text_sensor.text_sensor_schema(
+    CONF_SERIAL_NUMBER: text_sensor.text_sensor_schema(
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
     CONF_OPERATION_MODE: text_sensor.text_sensor_schema(),

@@ -63,8 +63,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
     battery_connected_binary_sensor_ = battery_connected_binary_sensor;
   }
 
-  void set_device_model_text_sensor(text_sensor::TextSensor *device_model_text_sensor) {
-    device_model_text_sensor_ = device_model_text_sensor;
+  void set_serial_number_text_sensor(text_sensor::TextSensor *serial_number_text_sensor) {
+    serial_number_text_sensor_ = serial_number_text_sensor;
   }
   void set_operation_mode_text_sensor(text_sensor::TextSensor *operation_mode_text_sensor) {
     operation_mode_text_sensor_ = operation_mode_text_sensor;
@@ -120,7 +120,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *battery_status_sensor_;
   sensor::Sensor *grid_connection_status_sensor_;
 
-  text_sensor::TextSensor *device_model_text_sensor_;
+  text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;
 
   button::Button *factory_reset_button_;

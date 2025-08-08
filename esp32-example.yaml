@@ -355,9 +355,9 @@ binary_sensor:
     icon: mdi:transmission-tower
 
 text_sensor:
-  # Device Model (would need register 3-7 reading)
+  # Serial Number (would need register 3-7 reading)
   - platform: template
-    name: "${name} device model"
+    name: "${name} serial number"
     lambda: |-
       return std::string("Lumentree Modbus");
     icon: mdi:information
