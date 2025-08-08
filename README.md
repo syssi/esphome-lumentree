@@ -26,7 +26,7 @@ external_components:
   - source: github://syssi/esphome-lumentree@main
 ```
 
-or just use the `esp32-example.yaml` as proof of concept:
+or just use the `esp32-ble-example.yaml` as proof of concept:
 
 ```bash
 # Install esphome
@@ -48,114 +48,15 @@ mqtt_password: MY_MQTT_PASSWORD
 EOF
 
 # Validate the configuration, create a binary, upload it, and start logs
-# If you use a esp8266 run the esp8266-example.yaml
-esphome run esp32-example.yaml
+esphome run esp32-ble-example.yaml
 
 ```
 
 ## Example response all sensors enabled
 
 ```
-[D][lumentree:031] System Status Register 0: 0x0000
-[D][lumentree:031] System Status Register 2: 0x4C54  # Device Type Code
-[D][lumentree:031] System Status Register 3-7: LT-INV  # Device Model Name (ASCII)
-[D][lumentree:031] System Status Register 11: 5680  # Battery Voltage: 56.80V
-[D][lumentree:031] System Status Register 12: 1250  # Battery Current: 12.50A
-[D][lumentree:031] System Status Register 13: 2300  # AC Output Voltage: 230.0V
-[D][lumentree:031] System Status Register 18: 1200  # AC Output Power: 1200W
-[D][lumentree:031] System Status Register 20: 420   # PV Input Voltage: 420V
-[D][lumentree:031] System Status Register 22: 800   # PV Input Power: 800W
-[D][lumentree:031] System Status Register 24: 250   # Device Temperature: 25.0°C
-[D][lumentree:031] System Status Register 50: 85    # Battery SOC: 85%
-[D][lumentree:031] System Status Register 53: -500  # Grid Input Power: -500W (exporting)
-[D][lumentree:031] System Status Register 67: 700   # Family Load Power: 700W
-[D][lumentree:031] System Status Register 68: 1     # Operation Mode: 1 (Normal)
-[D][lumentree:031] System Status Register 70: 8     # Grid Connection Status: 8 (Connected)
+TBD.
 ```
-
-## Configuration
-
-The component fetches data from registers 0-95 on connection, providing comprehensive system monitoring.
-
-### Binary sensors
-
-```yaml
-binary_sensor:
-  - platform: lumentree
-    grid_connected:
-      name: "${name} grid connected"
-    battery_connected:
-      name: "${name} battery connected"
-```
-
-### Sensors
-
-```yaml
-sensor:
-  - platform: lumentree
-    battery_voltage:
-      name: "${name} battery voltage"
-    battery_current:
-      name: "${name} battery current"
-    battery_power:
-      name: "${name} battery power"
-    battery_soc:
-      name: "${name} battery state of charge"
-    ac_voltage:
-      name: "${name} ac voltage"
-    ac_current:
-      name: "${name} ac current"
-    ac_power:
-      name: "${name} ac power"
-    pv_voltage:
-      name: "${name} pv voltage"
-    pv_power:
-      name: "${name} pv power"
-    grid_power:
-      name: "${name} grid power"
-    load_power:
-      name: "${name} load power"
-    device_temperature:
-      name: "${name} device temperature"
-    power_generation_today:
-      name: "${name} power generation today"
-    power_generation_total:
-      name: "${name} power generation total"
-```
-
-### Text sensors
-
-```yaml
-text_sensor:
-  - platform: lumentree
-    device_model:
-      name: "${name} device model"
-    operation_mode:
-      name: "${name} operation mode"
-    grid_status:
-      name: "${name} grid status"
-```
-
-## Protocol
-
-The Lumentree BLE protocol uses standard MODBUS commands over BLE:
-
-- **Service UUID**: `ffe0`
-- **Write Characteristic**: `ffe1` 
-- **Notify Characteristic**: `fd03`
-
-Key register mappings:
-- Registers 0-95: System status and real-time data
-- Register 11: Battery voltage (V÷100)
-- Register 12: Battery current (A÷100) 
-- Register 18: AC output power (W)
-- Register 20: PV input voltage (V)
-- Register 22: PV input power (W)
-- Register 50: Battery state of charge (%)
-- Register 67: Load power consumption (W)
-- Register 70: Grid connection status (≥7 = connected)
-
-The component automatically reads the first 90 registers on connection and decodes the values according to the Lumentree protocol specification.
 
 ## Troubleshooting
 
