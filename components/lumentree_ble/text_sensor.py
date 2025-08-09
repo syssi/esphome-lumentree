@@ -9,6 +9,7 @@ DEPENDENCIES = ["lumentree_ble"]
 
 CONF_SERIAL_NUMBER = "serial_number"
 CONF_OPERATION_MODE = "operation_mode"
+CONF_DEVICE_MODEL = "device_model"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -17,6 +18,9 @@ TEXT_SENSORS = {
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
     CONF_OPERATION_MODE: text_sensor.text_sensor_schema(),
+    CONF_DEVICE_MODEL: text_sensor.text_sensor_schema(
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+    ),
 }
 
 CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(

@@ -9,6 +9,20 @@ namespace lumentree_ble {
 
 static const char *const TAG = "lumentree_ble";
 
+struct DeviceModel {
+  uint16_t device_type;
+  uint16_t power_rating;
+  bool light_engine;
+  const char *model_name;
+};
+
+static const DeviceModel DEVICE_MODELS[] = {
+    {200, 1, true, "RENOGE"},           {300, 1, false, "SUNT-3.6KW-P"}, {300, 1, true, "SUNT-3.6KW-H"},
+    {300, 2, false, "SUNT-5.5KW-P"},    {300, 2, true, "SUNT-5.5KW-H"},  {300, 3, false, "SUNT-4.0KW-US-P"},
+    {300, 4, true, "6KW-ESP"},          {300, 5, false, "SUNT-6.0KW-P"}, {300, 5, true, "SUNT-6.0KW-H"},
+    {300, 6, false, "SUNT-8KW-T-test"}, {300, 6, true, "SUNT-8KW-H"},    {300, 7, false, "SUNT-4.0KW-P"},
+    {300, 7, true, "SUNT-4.0KW-H"}};
+
 static const uint16_t LUMENTREE_SERVICE_UUID = 0xFFE0;
 static const uint16_t LUMENTREE_NOTIFY_CHARACTERISTIC_UUID = 0xFFE1;
 
@@ -171,6 +185,7 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Grid CT Power", this->grid_ct_power_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
+  LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
 }
 
 void LumentreeBle::update() {
@@ -372,6 +387,15 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         ESP_LOGVV(TAG, "Register %d: 0x%04X (%d)", register_index, register_value, register_value);
         break;
     }
+  }
+
+  if (byte_count >= 10 * 2) {
+    uint16_t device_type = lumentree_get_16bit(3 + 0 * 2);
+    uint16_t power_rating = lumentree_get_16bit(3 + 8 * 2);
+    bool light_engine = !serial_number.empty() && serial_number[0] == 'H';
+
+    this->publish_state_(this->device_model_text_sensor_,
+                         this->generate_device_model_(device_type, power_rating, light_engine));
   }
 }
 
@@ -598,6 +622,16 @@ float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
     default:
       return 3600.0f;  // 3.6KW (default)
   }
+}
+
+std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t power_rating, bool light_engine) {
+  for (const auto &model : DEVICE_MODELS) {
+    if (model.device_type == device_type && model.power_rating == power_rating && model.light_engine == light_engine) {
+      return model.model_name;
+    }
+  }
+
+  return str_snprintf("Unknown (Type=%d, Power=%d, Engine=%d)", 40, device_type, power_rating, light_engine ? 1 : 0);
 }
 
 }  // namespace lumentree_ble

@@ -130,6 +130,8 @@ text_sensor:
       name: "${name} serial number"
     operation_mode:
       name: "${name} operation mode"
+    device_model:
+      name: "${name} device model"
 
 button:
   - platform: lumentree_ble

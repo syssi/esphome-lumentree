@@ -94,6 +94,9 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_operation_mode_text_sensor(text_sensor::TextSensor *operation_mode_text_sensor) {
     operation_mode_text_sensor_ = operation_mode_text_sensor;
   }
+  void set_device_model_text_sensor(text_sensor::TextSensor *device_model_text_sensor) {
+    device_model_text_sensor_ = device_model_text_sensor;
+  }
 
   void set_factory_reset_button(button::Button *factory_reset_button) { factory_reset_button_ = factory_reset_button; }
   void set_restart_device_button(button::Button *restart_device_button) {
@@ -156,6 +159,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
 
   text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;
+  text_sensor::TextSensor *device_model_text_sensor_;
 
   button::Button *factory_reset_button_;
   button::Button *restart_device_button_;
@@ -187,6 +191,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void send_next_request_();
   std::string operation_mode_to_string_(uint16_t mode);
   float power_rating_code_to_watts_(uint16_t code);
+  std::string generate_device_model_(uint16_t device_type, uint16_t power_rating, bool light_engine);
 };
 
 }  // namespace lumentree_ble
