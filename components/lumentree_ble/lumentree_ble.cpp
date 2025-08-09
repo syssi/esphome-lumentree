@@ -276,10 +276,6 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
   uint8_t byte_count = data[2];
   ESP_LOGI(TAG, "Decoding System Status registers (0-94)");
 
-  // 0x02: Device Type Code
-  uint16_t device_type = lumentree_get_16bit(5);
-  ESP_LOGI(TAG, "Device Type Code: 0x%04X", device_type);
-
   // 0x03-0x07: Serial Number (5 registers, ASCII)
   std::string serial_number(data.begin() + 9, data.begin() + 19);
   serial_number.erase(serial_number.find_last_not_of(" \0") + 1);
@@ -296,6 +292,9 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         break;
       case 1:  // 0x01: Device Configuration (PV2 Support)
         this->publish_state_(this->pv2_support_binary_sensor_, register_value == 0x0102);
+        break;
+      case 2:  // 0x02: Device Type Code
+        ESP_LOGVV(TAG, "Device Type Code: 0x%04X", register_value);
         break;
       case 8:  // 0x08: Power Level (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW)
         this->publish_state_(this->device_power_rating_code_sensor_, register_value);
