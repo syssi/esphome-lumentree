@@ -4,15 +4,18 @@ import esphome.config_validation as cv
 from esphome.const import (
     CONF_BATTERY_VOLTAGE,
     DEVICE_CLASS_CURRENT,
+    DEVICE_CLASS_ENERGY,
     DEVICE_CLASS_FREQUENCY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
     ENTITY_CATEGORY_DIAGNOSTIC,
     STATE_CLASS_MEASUREMENT,
+    STATE_CLASS_TOTAL_INCREASING,
     UNIT_AMPERE,
     UNIT_CELSIUS,
     UNIT_HERTZ,
+    UNIT_KILOWATT_HOURS,
     UNIT_PERCENT,
     UNIT_VOLT,
     UNIT_VOLT_AMPS,
@@ -47,6 +50,12 @@ CONF_DEVICE_POWER_RATING_CODE = "device_power_rating_code"
 CONF_DEVICE_POWER_RATING = "device_power_rating"
 CONF_AC_OUTPUT_APPARENT_POWER = "ac_output_apparent_power"
 CONF_GRID_CT_POWER = "grid_ct_power"
+CONF_TODAY_PV_PRODUCTION = "today_pv_production"
+CONF_TODAY_ESSENTIAL_LOAD = "today_essential_load"
+CONF_TODAY_TOTAL_CONSUMPTION = "today_total_consumption"
+CONF_TODAY_GRID_CONSUMPTION = "today_grid_consumption"
+CONF_TODAY_BATTERY_CHARGING = "today_battery_charging"
+CONF_TODAY_BATTERY_DISCHARGE = "today_battery_discharge"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -190,6 +199,42 @@ SENSORS = {
         accuracy_decimals=0,
         device_class=DEVICE_CLASS_POWER,
         state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_TODAY_PV_PRODUCTION: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_TODAY_ESSENTIAL_LOAD: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_TODAY_TOTAL_CONSUMPTION: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_TODAY_GRID_CONSUMPTION: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_TODAY_BATTERY_CHARGING: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_TODAY_BATTERY_DISCHARGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_KILOWATT_HOURS,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_ENERGY,
+        state_class=STATE_CLASS_TOTAL_INCREASING,
     ),
 }
 
