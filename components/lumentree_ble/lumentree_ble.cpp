@@ -171,6 +171,7 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Grid CT Power", this->grid_ct_power_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
+  LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
 }
 
 void LumentreeBle::update() {
@@ -373,6 +374,15 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         ESP_LOGVV(TAG, "Register %d: 0x%04X (%d)", register_index, register_value, register_value);
         break;
     }
+  }
+
+  if (byte_count >= 10 * 2) {
+    uint16_t device_type = lumentree_get_16bit(3 + 0 * 2);
+    uint16_t power_rating = lumentree_get_16bit(3 + 8 * 2);
+    bool light_engine = !serial_number.empty() && serial_number[0] == 'H';
+
+    this->publish_state_(this->device_model_text_sensor_,
+                         this->generate_device_model_(device_type, power_rating, light_engine));
   }
 }
 
@@ -599,6 +609,42 @@ float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
     default:
       return 3600.0f;  // 3.6KW (default)
   }
+}
+
+std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t power_rating, bool light_engine) {
+  if (device_type == 200) {
+    if (power_rating == 1 && light_engine) {
+      return "RENOGE";
+    }
+  } else if (device_type == 300) {
+    if (power_rating == 1 && !light_engine) {
+      return "SUNT-3.6KW-P";
+    } else if (power_rating == 1 && light_engine) {
+      return "SUNT-3.6KW-H";
+    } else if (power_rating == 2 && !light_engine) {
+      return "SUNT-5.5KW-P";
+    } else if (power_rating == 2 && light_engine) {
+      return "SUNT-5.5KW-H";
+    } else if (power_rating == 3 && !light_engine) {
+      return "SUNT-4.0KW-US-P";
+    } else if (power_rating == 4 && light_engine) {
+      return "6KW-ESP";
+    } else if (power_rating == 5 && !light_engine) {
+      return "SUNT-6.0KW-P";
+    } else if (power_rating == 5 && light_engine) {
+      return "SUNT-6.0KW-H";
+    } else if (power_rating == 6 && !light_engine) {
+      return "SUNT-8KW-T-test";
+    } else if (power_rating == 6 && light_engine) {
+      return "SUNT-8KW-H";
+    } else if (power_rating == 7 && !light_engine) {
+      return "SUNT-4.0KW-P";
+    } else if (power_rating == 7 && light_engine) {
+      return "SUNT-4.0KW-H";
+    }
+  }
+
+  return str_snprintf("Unknown (Type=%d, Power=%d, Engine=%d)", 40, device_type, power_rating, light_engine ? 1 : 0);
 }
 
 }  // namespace lumentree_ble
