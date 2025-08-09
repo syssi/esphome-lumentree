@@ -315,7 +315,7 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         this->publish_state_(this->pv_power_sensor_, register_value * 1.0f);
         break;
       case 24:  // 0x18: IGBT Temperature
-        this->publish_state_(this->device_temperature_sensor_, register_value * 0.1f);
+        this->publish_state_(this->device_temperature_sensor_, (register_value - 1000) * 0.1f);
         break;
       case 37:  // 0x25: Battery Status
         this->publish_state_(this->battery_connected_binary_sensor_, register_value != 2);
