@@ -105,6 +105,13 @@ For comprehensive data collection, use a multi-request approach:
 
 #### Device Parameter Registers (0-94) - Real-time Monitoring
 
+**Register Categories (based on Android app grouping):**
+- **AC Output Group**: Registers 13, 16, 18, 58 (Output voltage, frequency, power, VA)
+- **AC Input Group**: Registers 15, 17, 53, 59, 67 (Input voltage, frequency, power, CT power, load)
+- **PV Input Group**: Registers 20, 22, 72, 74 (PV1/PV2 voltage and power)
+- **Battery Status Group**: Registers 11, 12, 50, 61 (Voltage, current, SOC, power)
+- **Device Info Group**: Registers 0-8, 24, 37, 68, 70, 94 (ID, temp, status, mode)
+
 | Register | Name | Type | Scaling | Description |
 |----------|------|------|---------|-------------|
 | 0-7 | Device ID/Serial Number | Read | Direct | Device identification string |
@@ -118,7 +125,7 @@ For comprehensive data collection, use a multi-request approach:
 | 18 | Output Power | Read | Direct | AC output power in watts |
 | 20 | PV Input Voltage | Read | Direct | Solar panel voltage |
 | 22 | PV Input Power | Read | Direct | Solar panel power |
-| 24 | IGBT Temperature | Read | ÷10 | Internal temperature in °C |
+| 24 | IGBT Temperature | Read | (÷10)-100 | IGBT temperature in °C (formula: (value-1000)/10) |
 | 37 | Battery Status | Read | Direct | Battery connection status code |
 | 50 | Battery SOC | Read | Direct | State of charge percentage |
 | 53 | Input Power | Read | Signed | Grid input power in watts |
@@ -195,6 +202,8 @@ For comprehensive data collection, use a multi-request approach:
 - **Battery Status (Register 37)**: 0=Error, 1=Connected, 2=No Battery
 - **Work Mode (Register 68)**: 0=UPS Mode, 1=Hybrid Mode
 - **Grid Status (Register 70)**: ≥7=Connected, <7=Disconnected
+- **Device Type (Register 0)**: Identifies device model/generation
+- **PV2 Support (Register 1)**: 0x0102=PV2 Supported, Other=Single PV only
 
 ### CRC16 MODBUS Calculation
 
