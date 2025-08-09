@@ -217,17 +217,17 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   }
 }
 
-void LumentreeBle::read_registers(uint16_t start_register, uint16_t register_count) {
+void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uint16_t register_count) {
   std::vector<uint8_t> payload;
   payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
-  payload.push_back(LUMENTREE_MODBUS_FUNCTION_READ);
+  payload.push_back(function);
   payload.push_back((start_register >> 8) & 0xFF);
   payload.push_back(start_register & 0xFF);
   payload.push_back((register_count >> 8) & 0xFF);
   payload.push_back(register_count & 0xFF);
 
-  ESP_LOGD(TAG, "[%s] Reading Holding Registers: start=0x%04X, count=%d", this->parent_->address_str().c_str(),
-           start_register, register_count);
+  ESP_LOGD(TAG, "[%s] Reading Registers (0x%02X): start=0x%04X, count=%d", this->parent_->address_str().c_str(),
+           function, start_register, register_count);
 
   this->send_command(payload);
 }
@@ -581,15 +581,15 @@ void LumentreeBle::send_next_request_() {
   switch (this->current_request_type_) {
     case REQUEST_SYSTEM_STATUS:
       ESP_LOGI(TAG, "Requesting System Status registers (0-94)");
-      this->read_registers(0, 95);
+      this->read_registers(LUMENTREE_MODBUS_FUNCTION_READ, 0, 95);
       break;
     case REQUEST_BATTERY_CONFIG:
       ESP_LOGI(TAG, "Requesting Battery Configuration registers (101-157)");
-      this->read_registers(101, 57);
+      this->read_registers(LUMENTREE_MODBUS_FUNCTION_READ, 101, 57);
       break;
     case REQUEST_SYSTEM_CONTROL:
       ESP_LOGI(TAG, "Requesting System Control registers (160-180)");
-      this->read_registers(160, 21);
+      this->read_registers(LUMENTREE_MODBUS_FUNCTION_READ, 160, 21);
       break;
     case REQUEST_COMPLETE:
       ESP_LOGI(TAG, "All register requests completed");
