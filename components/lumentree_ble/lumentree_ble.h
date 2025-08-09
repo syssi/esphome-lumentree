@@ -73,6 +73,10 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_device_power_rating_sensor(sensor::Sensor *device_power_rating_sensor) {
     device_power_rating_sensor_ = device_power_rating_sensor;
   }
+  void set_ac_output_apparent_power_sensor(sensor::Sensor *ac_output_apparent_power_sensor) {
+    ac_output_apparent_power_sensor_ = ac_output_apparent_power_sensor;
+  }
+  void set_grid_ct_power_sensor(sensor::Sensor *grid_ct_power_sensor) { grid_ct_power_sensor_ = grid_ct_power_sensor; }
 
   void set_grid_connected_binary_sensor(binary_sensor::BinarySensor *grid_connected_binary_sensor) {
     grid_connected_binary_sensor_ = grid_connected_binary_sensor;
@@ -147,6 +151,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *device_type_sensor_;
   sensor::Sensor *device_power_rating_code_sensor_;
   sensor::Sensor *device_power_rating_sensor_;
+  sensor::Sensor *ac_output_apparent_power_sensor_;
+  sensor::Sensor *grid_ct_power_sensor_;
 
   text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;

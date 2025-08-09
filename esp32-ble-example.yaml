@@ -118,6 +118,10 @@ sensor:
       name: "${name} device power rating code"
     device_power_rating:
       name: "${name} device power rating"
+    ac_output_apparent_power:
+      name: "${name} ac output apparent power"
+    grid_ct_power:
+      name: "${name} grid ct power"
 
 text_sensor:
   - platform: lumentree_ble

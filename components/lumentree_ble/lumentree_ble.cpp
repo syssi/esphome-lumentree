@@ -167,6 +167,8 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Device Type", this->device_type_sensor_);
   LOG_SENSOR("  ", "Device Power Rating Code", this->device_power_rating_code_sensor_);
   LOG_SENSOR("  ", "Device Power Rating", this->device_power_rating_sensor_);
+  LOG_SENSOR("  ", "AC Output Apparent Power", this->ac_output_apparent_power_sensor_);
+  LOG_SENSOR("  ", "Grid CT Power", this->grid_ct_power_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
 }
@@ -279,7 +281,7 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
   ESP_LOGI(TAG, "Device Type Code: 0x%04X", device_type);
 
   // 0x03-0x07: Serial Number (5 registers, ASCII)
-  std::string serial_number(data.begin() + 7, data.begin() + 17);
+  std::string serial_number(data.begin() + 9, data.begin() + 19);
   serial_number.erase(serial_number.find_last_not_of(" \0") + 1);
   ESP_LOGI(TAG, "Serial Number: %s", serial_number.c_str());
   this->publish_state_(this->serial_number_text_sensor_, serial_number.empty() ? "Unknown" : serial_number);
@@ -338,6 +340,12 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         break;
       case 53:  // 0x35: Grid Input Power (signed)
         this->publish_state_(this->grid_power_sensor_, (int16_t) register_value * 1.0f);
+        break;
+      case 58:  // 0x3A: AC Output VA/Apparent Power
+        this->publish_state_(this->ac_output_apparent_power_sensor_, register_value * 1.0f);
+        break;
+      case 59:  // 0x3B: Grid CT Power
+        this->publish_state_(this->grid_ct_power_sensor_, register_value * 1.0f);
         break;
       case 61:  // 0x3D: Battery Power (signed)
         this->publish_state_(this->battery_power_sensor_, (int16_t) register_value * 1.0f);

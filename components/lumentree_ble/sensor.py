@@ -15,6 +15,7 @@ from esphome.const import (
     UNIT_HERTZ,
     UNIT_PERCENT,
     UNIT_VOLT,
+    UNIT_VOLT_AMPS,
     UNIT_WATT,
 )
 
@@ -44,6 +45,8 @@ CONF_GRID_CONNECTION_STATUS = "grid_connection_status"
 CONF_DEVICE_TYPE = "device_type"
 CONF_DEVICE_POWER_RATING_CODE = "device_power_rating_code"
 CONF_DEVICE_POWER_RATING = "device_power_rating"
+CONF_AC_OUTPUT_APPARENT_POWER = "ac_output_apparent_power"
+CONF_GRID_CT_POWER = "grid_ct_power"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -175,6 +178,18 @@ SENSORS = {
         device_class=DEVICE_CLASS_POWER,
         state_class=STATE_CLASS_MEASUREMENT,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+    ),
+    CONF_AC_OUTPUT_APPARENT_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT_AMPS,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_GRID_CT_POWER: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
     ),
 }
 

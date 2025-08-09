@@ -114,8 +114,11 @@ For comprehensive data collection, use a multi-request approach:
 
 | Register | Name | Type | Scaling | Description |
 |----------|------|------|---------|-------------|
-| 0-7 | Device ID/Serial Number | Read | Direct | Device identification string |
-| 8 | Product Model | Read | Direct | Device model identifier |
+| 0 | Device Type | Read | Direct | Device model identifier |
+| 1 | Device Configuration | Read | Direct | PV2 support check (0x0102=PV2 supported) |
+| 2 | Device Type Code | Read | Direct | Device type code for validation |
+| 3-7 | Serial Number | Read | ASCII | Device serial number (5 registers, 10 bytes ASCII) |
+| 8 | Device Power Rating | Read | Direct | Power rating code (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW) |
 | 11 | Battery Voltage | Read | ÷100 | Battery voltage in volts |
 | 12 | Discharge Current | Read | ÷100 | Battery discharge current in amperes |
 | 13 | Output Voltage | Read | ÷10 | AC output voltage |
