@@ -9,6 +9,20 @@ namespace lumentree_ble {
 
 static const char *const TAG = "lumentree_ble";
 
+struct DeviceModel {
+  uint16_t device_type;
+  uint16_t power_rating;
+  bool light_engine;
+  const char *model_name;
+};
+
+static const DeviceModel DEVICE_MODELS[] = {
+    {200, 1, true, "RENOGE"},           {300, 1, false, "SUNT-3.6KW-P"}, {300, 1, true, "SUNT-3.6KW-H"},
+    {300, 2, false, "SUNT-5.5KW-P"},    {300, 2, true, "SUNT-5.5KW-H"},  {300, 3, false, "SUNT-4.0KW-US-P"},
+    {300, 4, true, "6KW-ESP"},          {300, 5, false, "SUNT-6.0KW-P"}, {300, 5, true, "SUNT-6.0KW-H"},
+    {300, 6, false, "SUNT-8KW-T-test"}, {300, 6, true, "SUNT-8KW-H"},    {300, 7, false, "SUNT-4.0KW-P"},
+    {300, 7, true, "SUNT-4.0KW-H"}};
+
 static const uint16_t LUMENTREE_SERVICE_UUID = 0xFFE0;
 static const uint16_t LUMENTREE_NOTIFY_CHARACTERISTIC_UUID = 0xFFE1;
 
@@ -612,35 +626,9 @@ float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
 }
 
 std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t power_rating, bool light_engine) {
-  if (device_type == 200) {
-    if (power_rating == 1 && light_engine) {
-      return "RENOGE";
-    }
-  } else if (device_type == 300) {
-    if (power_rating == 1 && !light_engine) {
-      return "SUNT-3.6KW-P";
-    } else if (power_rating == 1 && light_engine) {
-      return "SUNT-3.6KW-H";
-    } else if (power_rating == 2 && !light_engine) {
-      return "SUNT-5.5KW-P";
-    } else if (power_rating == 2 && light_engine) {
-      return "SUNT-5.5KW-H";
-    } else if (power_rating == 3 && !light_engine) {
-      return "SUNT-4.0KW-US-P";
-    } else if (power_rating == 4 && light_engine) {
-      return "6KW-ESP";
-    } else if (power_rating == 5 && !light_engine) {
-      return "SUNT-6.0KW-P";
-    } else if (power_rating == 5 && light_engine) {
-      return "SUNT-6.0KW-H";
-    } else if (power_rating == 6 && !light_engine) {
-      return "SUNT-8KW-T-test";
-    } else if (power_rating == 6 && light_engine) {
-      return "SUNT-8KW-H";
-    } else if (power_rating == 7 && !light_engine) {
-      return "SUNT-4.0KW-P";
-    } else if (power_rating == 7 && light_engine) {
-      return "SUNT-4.0KW-H";
+  for (const auto &model : DEVICE_MODELS) {
+    if (model.device_type == device_type && model.power_rating == power_rating && model.light_engine == light_engine) {
+      return model.model_name;
     }
   }
 
