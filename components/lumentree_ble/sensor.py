@@ -36,6 +36,7 @@ CONF_PV2_POWER = "pv2_power"
 CONF_DEVICE_TYPE_IMAGE = "device_type_image"
 CONF_BATTERY_STATUS = "battery_status"
 CONF_GRID_CONNECTION_STATUS = "grid_connection_status"
+CONF_DEVICE_TYPE = "device_type"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -129,6 +130,11 @@ SENSORS = {
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
     CONF_GRID_CONNECTION_STATUS: sensor.sensor_schema(
+        accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+    ),
+    CONF_DEVICE_TYPE: sensor.sensor_schema(
         accuracy_decimals=0,
         state_class=STATE_CLASS_MEASUREMENT,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,

@@ -104,6 +104,8 @@ sensor:
       name: "${name} battery status"
     grid_connection_status:
       name: "${name} grid connection status"
+    device_type:
+      name: "${name} device type"
 
 text_sensor:
   - platform: lumentree_ble

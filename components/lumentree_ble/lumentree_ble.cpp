@@ -160,6 +160,7 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Device Type Image", this->device_type_image_sensor_);
   LOG_SENSOR("  ", "Battery Status", this->battery_status_sensor_);
   LOG_SENSOR("  ", "Grid Connection Status", this->grid_connection_status_sensor_);
+  LOG_SENSOR("  ", "Device Type", this->device_type_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
 }
@@ -267,8 +268,8 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
   uint8_t byte_count = data[2];
   ESP_LOGI(TAG, "Decoding System Status registers (0-94)");
 
-  // 0x00: System Register Base (not used)
-  ESP_LOGVV(TAG, "Register 0: 0x%04X", lumentree_get_16bit(3));
+  // 0x00: Device Type
+  this->publish_state_(this->device_type_sensor_, lumentree_get_16bit(3));
 
   // 0x02: Device Type Code
   uint16_t device_type = lumentree_get_16bit(5);
