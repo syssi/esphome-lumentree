@@ -82,7 +82,6 @@ TBD.
 
 - [Lumentree BLE Protocol Specification](https://github.com/syssi/esphome-lumentree/blob/main/docs/protocol-design.md)
 - https://github.com/MacGH23/lumentree-rs232-lib
-- https://github.com/philippoo66/py-lumentree
 
 ## Debugging
 
