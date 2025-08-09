@@ -544,9 +544,11 @@ void LumentreeBle::publish_state_(text_sensor::TextSensor *text_sensor, const st
 std::string LumentreeBle::operation_mode_to_string_(uint16_t mode) {
   switch (mode) {
     case 0:
-      return "UPS";
+      return "Battery Mode";
     case 1:
-      return "Normal";
+      return "Hybrid Mode";
+    case 2:
+      return "Grid-Tie Mode";
     default:
       return str_snprintf("Unknown (0x%04X)", 17, mode);
   }
