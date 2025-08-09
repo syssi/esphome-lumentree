@@ -183,6 +183,12 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Device Power Rating", this->device_power_rating_sensor_);
   LOG_SENSOR("  ", "AC Output Apparent Power", this->ac_output_apparent_power_sensor_);
   LOG_SENSOR("  ", "Grid CT Power", this->grid_ct_power_sensor_);
+  LOG_SENSOR("  ", "Today PV Production", this->today_pv_production_sensor_);
+  LOG_SENSOR("  ", "Today Essential Load", this->today_essential_load_sensor_);
+  LOG_SENSOR("  ", "Today Total Consumption", this->today_total_consumption_sensor_);
+  LOG_SENSOR("  ", "Today Grid Consumption", this->today_grid_consumption_sensor_);
+  LOG_SENSOR("  ", "Today Battery Charging", this->today_battery_charging_sensor_);
+  LOG_SENSOR("  ", "Today Battery Discharge", this->today_battery_discharge_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
@@ -268,6 +274,9 @@ void LumentreeBle::decode_(const std::vector<uint8_t> &data) {
       break;
     case REQUEST_SYSTEM_CONTROL:
       this->decode_system_control_registers_(data);
+      break;
+    case REQUEST_DAILY_STATISTICS:
+      this->decode_daily_statistics_registers_(data);
       break;
     default:
       ESP_LOGW(TAG, "Unknown request type: %d", this->current_request_type_);
@@ -591,6 +600,10 @@ void LumentreeBle::send_next_request_() {
       ESP_LOGI(TAG, "Requesting System Control registers (160-180)");
       this->read_registers(LUMENTREE_MODBUS_FUNCTION_READ, 160, 21);
       break;
+    case REQUEST_DAILY_STATISTICS:
+      ESP_LOGI(TAG, "Requesting Daily Statistics registers (0-7)");
+      this->read_registers(LUMENTREE_MODBUS_FUNCTION_READ_INPUT, 0, 8);
+      break;
     case REQUEST_COMPLETE:
       ESP_LOGI(TAG, "All register requests completed");
       break;
@@ -621,6 +634,48 @@ float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
       return 6000.0f;  // 6.0KW
     default:
       return 3600.0f;  // 3.6KW (default)
+  }
+}
+
+void LumentreeBle::decode_daily_statistics_registers_(const std::vector<uint8_t> &data) {
+  auto lumentree_get_16bit = [&](size_t i) -> uint16_t {
+    return (uint16_t(data[i + 0]) << 8) | (uint16_t(data[i + 1]) << 0);
+  };
+
+  uint8_t byte_count = data[2];
+  ESP_LOGI(TAG, "Decoding Daily Statistics registers (0-7)");
+
+  if (byte_count < 16) {
+    ESP_LOGW(TAG, "Insufficient data for daily statistics: only %d bytes available", byte_count);
+    return;
+  }
+
+  for (uint8_t register_index = 0; register_index < 8; register_index++) {
+    uint16_t register_value = lumentree_get_16bit(3 + register_index * 2);
+
+    switch (register_index) {
+      case 0:
+        this->publish_state_(this->today_pv_production_sensor_, register_value * 0.1f);
+        break;
+      case 1:
+        this->publish_state_(this->today_essential_load_sensor_, register_value * 0.1f);
+        break;
+      case 2:
+        this->publish_state_(this->today_grid_consumption_sensor_, register_value * 0.1f);
+        break;
+      case 3:
+        this->publish_state_(this->today_total_consumption_sensor_, register_value * 0.1f);
+        break;
+      case 4:
+        this->publish_state_(this->today_battery_charging_sensor_, register_value * 0.1f);
+        break;
+      case 5:
+        this->publish_state_(this->today_battery_discharge_sensor_, register_value * 0.1f);
+        break;
+      default:
+        ESP_LOGVV(TAG, "Daily Statistics Register %d: 0x%04X (%d)", register_index, register_value, register_value);
+        break;
+    }
   }
 }
 

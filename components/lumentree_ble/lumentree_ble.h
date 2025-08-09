@@ -77,6 +77,24 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
     ac_output_apparent_power_sensor_ = ac_output_apparent_power_sensor;
   }
   void set_grid_ct_power_sensor(sensor::Sensor *grid_ct_power_sensor) { grid_ct_power_sensor_ = grid_ct_power_sensor; }
+  void set_today_pv_production_sensor(sensor::Sensor *today_pv_production_sensor) {
+    today_pv_production_sensor_ = today_pv_production_sensor;
+  }
+  void set_today_essential_load_sensor(sensor::Sensor *today_essential_load_sensor) {
+    today_essential_load_sensor_ = today_essential_load_sensor;
+  }
+  void set_today_total_consumption_sensor(sensor::Sensor *today_total_consumption_sensor) {
+    today_total_consumption_sensor_ = today_total_consumption_sensor;
+  }
+  void set_today_grid_consumption_sensor(sensor::Sensor *today_grid_consumption_sensor) {
+    today_grid_consumption_sensor_ = today_grid_consumption_sensor;
+  }
+  void set_today_battery_charging_sensor(sensor::Sensor *today_battery_charging_sensor) {
+    today_battery_charging_sensor_ = today_battery_charging_sensor;
+  }
+  void set_today_battery_discharge_sensor(sensor::Sensor *today_battery_discharge_sensor) {
+    today_battery_discharge_sensor_ = today_battery_discharge_sensor;
+  }
 
   void set_grid_connected_binary_sensor(binary_sensor::BinarySensor *grid_connected_binary_sensor) {
     grid_connected_binary_sensor_ = grid_connected_binary_sensor;
@@ -156,6 +174,12 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *device_power_rating_sensor_;
   sensor::Sensor *ac_output_apparent_power_sensor_;
   sensor::Sensor *grid_ct_power_sensor_;
+  sensor::Sensor *today_pv_production_sensor_;
+  sensor::Sensor *today_essential_load_sensor_;
+  sensor::Sensor *today_total_consumption_sensor_;
+  sensor::Sensor *today_grid_consumption_sensor_;
+  sensor::Sensor *today_battery_charging_sensor_;
+  sensor::Sensor *today_battery_discharge_sensor_;
 
   text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;
@@ -178,13 +202,20 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   uint32_t last_frame_timestamp_ = 0;
 
   // Request tracking
-  enum RequestType { REQUEST_SYSTEM_STATUS, REQUEST_BATTERY_CONFIG, REQUEST_SYSTEM_CONTROL, REQUEST_COMPLETE };
+  enum RequestType {
+    REQUEST_SYSTEM_STATUS,
+    REQUEST_BATTERY_CONFIG,
+    REQUEST_SYSTEM_CONTROL,
+    REQUEST_DAILY_STATISTICS,
+    REQUEST_COMPLETE
+  };
   RequestType current_request_type_ = REQUEST_SYSTEM_STATUS;
 
   void decode_(const std::vector<uint8_t> &data);
   void decode_system_status_registers_(const std::vector<uint8_t> &data);
   void decode_battery_config_registers_(const std::vector<uint8_t> &data);
   void decode_system_control_registers_(const std::vector<uint8_t> &data);
+  void decode_daily_statistics_registers_(const std::vector<uint8_t> &data);
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);

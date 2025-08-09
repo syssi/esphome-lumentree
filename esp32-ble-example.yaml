@@ -122,6 +122,18 @@ sensor:
       name: "${name} ac output apparent power"
     grid_ct_power:
       name: "${name} grid ct power"
+    today_pv_production:
+      name: "${name} today pv production"
+    today_essential_load:
+      name: "${name} today essential load"
+    today_total_consumption:
+      name: "${name} today total consumption"
+    today_grid_consumption:
+      name: "${name} today grid consumption"
+    today_battery_charging:
+      name: "${name} today battery charging"
+    today_battery_discharge:
+      name: "${name} today battery discharge"
 
 text_sensor:
   - platform: lumentree_ble
