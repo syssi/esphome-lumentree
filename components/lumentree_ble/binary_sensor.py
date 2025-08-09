@@ -9,6 +9,7 @@ DEPENDENCIES = ["lumentree_ble"]
 
 CONF_GRID_CONNECTED = "grid_connected"
 CONF_BATTERY_CONNECTED = "battery_connected"
+CONF_PV2_SUPPORTED = "pv2_supported"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -17,6 +18,9 @@ BINARY_SENSORS = {
         device_class=DEVICE_CLASS_CONNECTIVITY,
     ),
     CONF_BATTERY_CONNECTED: binary_sensor.binary_sensor_schema(
+        device_class=DEVICE_CLASS_CONNECTIVITY,
+    ),
+    CONF_PV2_SUPPORTED: binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
     ),
 }

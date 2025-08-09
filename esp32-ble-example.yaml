@@ -68,6 +68,8 @@ binary_sensor:
       name: "${name} grid connected"
     battery_connected:
       name: "${name} battery connected"
+    pv2_supported:
+      name: "${name} pv2 support"
 
 sensor:
   - platform: lumentree_ble

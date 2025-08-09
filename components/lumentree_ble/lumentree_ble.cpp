@@ -144,6 +144,7 @@ void LumentreeBle::dump_config() {
   ESP_LOGCONFIG(TAG, "Lumentree BLE:");
   LOG_BINARY_SENSOR("  ", "Grid Connected", this->grid_connected_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "Battery Connected", this->battery_connected_binary_sensor_);
+  LOG_BINARY_SENSOR("  ", "PV2 Supported", this->pv2_supported_binary_sensor_);
   LOG_SENSOR("  ", "Battery Voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("  ", "Battery Current", this->battery_current_sensor_);
   LOG_SENSOR("  ", "Battery Power", this->battery_power_sensor_);
@@ -270,6 +271,9 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
 
   // 0x00: Device Type
   this->publish_state_(this->device_type_sensor_, lumentree_get_16bit(3));
+
+  // 0x01: Device Configuration (PV2 Support)
+  this->publish_state_(this->pv2_supported_binary_sensor_, lumentree_get_16bit(5) == 0x0102);
 
   // 0x02: Device Type Code
   uint16_t device_type = lumentree_get_16bit(5);

@@ -63,6 +63,9 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_battery_connected_binary_sensor(binary_sensor::BinarySensor *battery_connected_binary_sensor) {
     battery_connected_binary_sensor_ = battery_connected_binary_sensor;
   }
+  void set_pv2_supported_binary_sensor(binary_sensor::BinarySensor *pv2_supported_binary_sensor) {
+    pv2_supported_binary_sensor_ = pv2_supported_binary_sensor;
+  }
 
   void set_serial_number_text_sensor(text_sensor::TextSensor *serial_number_text_sensor) {
     serial_number_text_sensor_ = serial_number_text_sensor;
@@ -103,6 +106,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
  protected:
   binary_sensor::BinarySensor *grid_connected_binary_sensor_;
   binary_sensor::BinarySensor *battery_connected_binary_sensor_;
+  binary_sensor::BinarySensor *pv2_supported_binary_sensor_;
 
   sensor::Sensor *battery_voltage_sensor_;
   sensor::Sensor *battery_current_sensor_;
