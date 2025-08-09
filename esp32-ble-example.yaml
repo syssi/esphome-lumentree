@@ -82,8 +82,14 @@ sensor:
       name: "${name} battery power"
     battery_soc:
       name: "${name} battery state of charge"
-    ac_voltage:
-      name: "${name} ac voltage"
+    ac_output_voltage:
+      name: "${name} ac output voltage"
+    ac_input_voltage:
+      name: "${name} ac input voltage"
+    ac_output_frequency:
+      name: "${name} ac output frequency"
+    ac_input_frequency:
+      name: "${name} ac input frequency"
     ac_power:
       name: "${name} ac power"
     pv_voltage:

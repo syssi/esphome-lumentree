@@ -4,6 +4,7 @@ import esphome.config_validation as cv
 from esphome.const import (
     CONF_BATTERY_VOLTAGE,
     DEVICE_CLASS_CURRENT,
+    DEVICE_CLASS_FREQUENCY,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     DEVICE_CLASS_VOLTAGE,
@@ -11,6 +12,7 @@ from esphome.const import (
     STATE_CLASS_MEASUREMENT,
     UNIT_AMPERE,
     UNIT_CELSIUS,
+    UNIT_HERTZ,
     UNIT_PERCENT,
     UNIT_VOLT,
     UNIT_WATT,
@@ -24,7 +26,10 @@ DEPENDENCIES = ["lumentree_ble"]
 CONF_BATTERY_CURRENT = "battery_current"
 CONF_BATTERY_POWER = "battery_power"
 CONF_BATTERY_SOC = "battery_soc"
-CONF_AC_VOLTAGE = "ac_voltage"
+CONF_AC_OUTPUT_VOLTAGE = "ac_output_voltage"
+CONF_AC_INPUT_VOLTAGE = "ac_input_voltage"
+CONF_AC_OUTPUT_FREQUENCY = "ac_output_frequency"
+CONF_AC_INPUT_FREQUENCY = "ac_input_frequency"
 CONF_AC_POWER = "ac_power"
 CONF_PV_VOLTAGE = "pv_voltage"
 CONF_PV_POWER = "pv_power"
@@ -66,10 +71,28 @@ SENSORS = {
         accuracy_decimals=0,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
-    CONF_AC_VOLTAGE: sensor.sensor_schema(
+    CONF_AC_OUTPUT_VOLTAGE: sensor.sensor_schema(
         unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_INPUT_VOLTAGE: sensor.sensor_schema(
+        unit_of_measurement=UNIT_VOLT,
+        accuracy_decimals=1,
+        device_class=DEVICE_CLASS_VOLTAGE,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_OUTPUT_FREQUENCY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_HERTZ,
+        accuracy_decimals=2,
+        device_class=DEVICE_CLASS_FREQUENCY,
+        state_class=STATE_CLASS_MEASUREMENT,
+    ),
+    CONF_AC_INPUT_FREQUENCY: sensor.sensor_schema(
+        unit_of_measurement=UNIT_HERTZ,
+        accuracy_decimals=2,
+        device_class=DEVICE_CLASS_FREQUENCY,
         state_class=STATE_CLASS_MEASUREMENT,
     ),
     CONF_AC_POWER: sensor.sensor_schema(

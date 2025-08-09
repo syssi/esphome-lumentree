@@ -149,7 +149,10 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Battery Current", this->battery_current_sensor_);
   LOG_SENSOR("  ", "Battery Power", this->battery_power_sensor_);
   LOG_SENSOR("  ", "Battery SoC", this->battery_soc_sensor_);
-  LOG_SENSOR("  ", "AC Voltage", this->ac_voltage_sensor_);
+  LOG_SENSOR("  ", "AC Output Voltage", this->ac_output_voltage_sensor_);
+  LOG_SENSOR("  ", "AC Input Voltage", this->ac_input_voltage_sensor_);
+  LOG_SENSOR("  ", "AC Output Frequency", this->ac_output_frequency_sensor_);
+  LOG_SENSOR("  ", "AC Input Frequency", this->ac_input_frequency_sensor_);
   LOG_SENSOR("  ", "AC Power", this->ac_power_sensor_);
   LOG_SENSOR("  ", "PV Voltage", this->pv_voltage_sensor_);
   LOG_SENSOR("  ", "PV Power", this->pv_power_sensor_);
@@ -303,7 +306,16 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         this->publish_state_(this->battery_current_sensor_, (int16_t) register_value * 0.01f);
         break;
       case 13:  // 0x0D: AC Output Voltage
-        this->publish_state_(this->ac_voltage_sensor_, register_value * 0.1f);
+        this->publish_state_(this->ac_output_voltage_sensor_, register_value * 0.1f);
+        break;
+      case 15:  // 0x0F: AC Input Voltage
+        this->publish_state_(this->ac_input_voltage_sensor_, register_value * 0.1f);
+        break;
+      case 16:  // 0x10: AC Output Frequency
+        this->publish_state_(this->ac_output_frequency_sensor_, register_value * 0.01f);
+        break;
+      case 17:  // 0x11: AC Input Frequency
+        this->publish_state_(this->ac_input_frequency_sensor_, register_value * 0.01f);
         break;
       case 18:  // 0x12: AC Output Power
         this->publish_state_(this->ac_power_sensor_, register_value * 1.0f);

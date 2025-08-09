@@ -35,7 +35,18 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   }
   void set_battery_power_sensor(sensor::Sensor *battery_power_sensor) { battery_power_sensor_ = battery_power_sensor; }
   void set_battery_soc_sensor(sensor::Sensor *battery_soc_sensor) { battery_soc_sensor_ = battery_soc_sensor; }
-  void set_ac_voltage_sensor(sensor::Sensor *ac_voltage_sensor) { ac_voltage_sensor_ = ac_voltage_sensor; }
+  void set_ac_output_voltage_sensor(sensor::Sensor *ac_output_voltage_sensor) {
+    ac_output_voltage_sensor_ = ac_output_voltage_sensor;
+  }
+  void set_ac_input_voltage_sensor(sensor::Sensor *ac_input_voltage_sensor) {
+    ac_input_voltage_sensor_ = ac_input_voltage_sensor;
+  }
+  void set_ac_output_frequency_sensor(sensor::Sensor *ac_output_frequency_sensor) {
+    ac_output_frequency_sensor_ = ac_output_frequency_sensor;
+  }
+  void set_ac_input_frequency_sensor(sensor::Sensor *ac_input_frequency_sensor) {
+    ac_input_frequency_sensor_ = ac_input_frequency_sensor;
+  }
   void set_ac_power_sensor(sensor::Sensor *ac_power_sensor) { ac_power_sensor_ = ac_power_sensor; }
   void set_pv_voltage_sensor(sensor::Sensor *pv_voltage_sensor) { pv_voltage_sensor_ = pv_voltage_sensor; }
   void set_pv_power_sensor(sensor::Sensor *pv_power_sensor) { pv_power_sensor_ = pv_power_sensor; }
@@ -118,7 +129,10 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *battery_current_sensor_;
   sensor::Sensor *battery_power_sensor_;
   sensor::Sensor *battery_soc_sensor_;
-  sensor::Sensor *ac_voltage_sensor_;
+  sensor::Sensor *ac_output_voltage_sensor_;
+  sensor::Sensor *ac_input_voltage_sensor_;
+  sensor::Sensor *ac_output_frequency_sensor_;
+  sensor::Sensor *ac_input_frequency_sensor_;
   sensor::Sensor *ac_power_sensor_;
   sensor::Sensor *pv_voltage_sensor_;
   sensor::Sensor *pv_power_sensor_;
