@@ -144,7 +144,7 @@ void LumentreeBle::dump_config() {
   ESP_LOGCONFIG(TAG, "Lumentree BLE:");
   LOG_BINARY_SENSOR("  ", "Grid Connected", this->grid_connected_binary_sensor_);
   LOG_BINARY_SENSOR("  ", "Battery Connected", this->battery_connected_binary_sensor_);
-  LOG_BINARY_SENSOR("  ", "PV2 Supported", this->pv2_supported_binary_sensor_);
+  LOG_BINARY_SENSOR("  ", "PV2 Support", this->pv2_support_binary_sensor_);
   LOG_SENSOR("  ", "Battery Voltage", this->battery_voltage_sensor_);
   LOG_SENSOR("  ", "Battery Current", this->battery_current_sensor_);
   LOG_SENSOR("  ", "Battery Power", this->battery_power_sensor_);
@@ -271,12 +271,6 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
   uint8_t byte_count = data[2];
   ESP_LOGI(TAG, "Decoding System Status registers (0-94)");
 
-  // 0x00: Device Type
-  this->publish_state_(this->device_type_sensor_, lumentree_get_16bit(3));
-
-  // 0x01: Device Configuration (PV2 Support)
-  this->publish_state_(this->pv2_supported_binary_sensor_, lumentree_get_16bit(5) == 0x0102);
-
   // 0x02: Device Type Code
   uint16_t device_type = lumentree_get_16bit(5);
   ESP_LOGI(TAG, "Device Type Code: 0x%04X", device_type);
@@ -292,6 +286,12 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
     uint16_t register_value = lumentree_get_16bit(3 + register_index * 2);
 
     switch (register_index) {
+      case 0:  // 0x00: Device Type
+        this->publish_state_(this->device_type_sensor_, register_value);
+        break;
+      case 1:  // 0x01: Device Configuration (PV2 Support)
+        this->publish_state_(this->pv2_support_binary_sensor_, register_value == 0x0102);
+        break;
       case 8:  // 0x08: Power Level (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW)
         this->publish_state_(this->device_power_rating_code_sensor_, register_value);
         this->publish_state_(this->device_power_rating_sensor_, this->power_rating_code_to_watts_(register_value));
