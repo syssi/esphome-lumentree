@@ -162,6 +162,8 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Battery Status", this->battery_status_sensor_);
   LOG_SENSOR("  ", "Grid Connection Status", this->grid_connection_status_sensor_);
   LOG_SENSOR("  ", "Device Type", this->device_type_sensor_);
+  LOG_SENSOR("  ", "Device Power Rating Code", this->device_power_rating_code_sensor_);
+  LOG_SENSOR("  ", "Device Power Rating", this->device_power_rating_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
 }
@@ -291,8 +293,8 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
 
     switch (register_index) {
       case 8:  // 0x08: Power Level (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW)
-        ESP_LOGI(TAG, "Power Level: %d", register_value);
-        // Note: This determines device model (SUNT-5.5KW-P, SUNT-4.0KW-US-P, SUNT-6.0KW-P, etc.)
+        this->publish_state_(this->device_power_rating_code_sensor_, register_value);
+        this->publish_state_(this->device_power_rating_sensor_, this->power_rating_code_to_watts_(register_value));
         break;
       case 11:  // 0x0B: Battery Voltage
         this->publish_state_(this->battery_voltage_sensor_, register_value * 0.01f);
@@ -562,6 +564,19 @@ void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
   payload.push_back(value & 0xFF);
 
   this->send_command(payload);
+}
+
+float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
+  switch (code) {
+    case 2:
+      return 5500.0f;  // 5.5KW
+    case 3:
+      return 4000.0f;  // 4.0KW
+    case 5:
+      return 6000.0f;  // 6.0KW
+    default:
+      return 3600.0f;  // 3.6KW (default)
+  }
 }
 
 }  // namespace lumentree_ble

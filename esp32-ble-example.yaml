@@ -108,6 +108,10 @@ sensor:
       name: "${name} grid connection status"
     device_type:
       name: "${name} device type"
+    device_power_rating_code:
+      name: "${name} device power rating code"
+    device_power_rating:
+      name: "${name} device power rating"
 
 text_sensor:
   - platform: lumentree_ble

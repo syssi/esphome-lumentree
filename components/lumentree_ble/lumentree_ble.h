@@ -56,6 +56,12 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
     grid_connection_status_sensor_ = grid_connection_status_sensor;
   }
   void set_device_type_sensor(sensor::Sensor *device_type_sensor) { device_type_sensor_ = device_type_sensor; }
+  void set_device_power_rating_code_sensor(sensor::Sensor *device_power_rating_code_sensor) {
+    device_power_rating_code_sensor_ = device_power_rating_code_sensor;
+  }
+  void set_device_power_rating_sensor(sensor::Sensor *device_power_rating_sensor) {
+    device_power_rating_sensor_ = device_power_rating_sensor;
+  }
 
   void set_grid_connected_binary_sensor(binary_sensor::BinarySensor *grid_connected_binary_sensor) {
     grid_connected_binary_sensor_ = grid_connected_binary_sensor;
@@ -125,6 +131,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *battery_status_sensor_;
   sensor::Sensor *grid_connection_status_sensor_;
   sensor::Sensor *device_type_sensor_;
+  sensor::Sensor *device_power_rating_code_sensor_;
+  sensor::Sensor *device_power_rating_sensor_;
 
   text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;
@@ -158,6 +166,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
   void send_next_request_();
   std::string operation_mode_to_string_(uint16_t mode);
+  float power_rating_code_to_watts_(uint16_t code);
 };
 
 }  // namespace lumentree_ble

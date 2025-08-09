@@ -37,6 +37,8 @@ CONF_DEVICE_TYPE_IMAGE = "device_type_image"
 CONF_BATTERY_STATUS = "battery_status"
 CONF_GRID_CONNECTION_STATUS = "grid_connection_status"
 CONF_DEVICE_TYPE = "device_type"
+CONF_DEVICE_POWER_RATING_CODE = "device_power_rating_code"
+CONF_DEVICE_POWER_RATING = "device_power_rating"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -136,6 +138,18 @@ SENSORS = {
     ),
     CONF_DEVICE_TYPE: sensor.sensor_schema(
         accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+    ),
+    CONF_DEVICE_POWER_RATING_CODE: sensor.sensor_schema(
+        accuracy_decimals=0,
+        state_class=STATE_CLASS_MEASUREMENT,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
+    ),
+    CONF_DEVICE_POWER_RATING: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
         state_class=STATE_CLASS_MEASUREMENT,
         entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
