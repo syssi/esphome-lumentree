@@ -9,6 +9,7 @@
 #include "esphome/components/button/button.h"
 #include "esphome/components/number/number.h"
 #include "esphome/components/switch/switch.h"
+#include "esphome/components/select/select.h"
 
 #ifdef USE_ESP32
 
@@ -149,9 +150,14 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_ac_charging_switch(switch_::Switch *ac_charging_switch) { ac_charging_switch_ = ac_charging_switch; }
   void set_output_switch(switch_::Switch *output_switch) { output_switch_ = output_switch; }
 
+  void set_operation_mode_select(select::Select *operation_mode_select) {
+    operation_mode_select_ = operation_mode_select;
+  }
+
   void assemble(const uint8_t *data, uint16_t length);
   void set_last_request(RequestType request_type);
   void write_register(uint8_t register_address, uint16_t value);
+  void write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values);
   void send_command(const std::vector<uint8_t> &payload);
   void read_registers(uint8_t function, uint16_t start_register, uint16_t register_count);
 
@@ -208,6 +214,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   switch_::Switch *ac_charging_switch_;
   switch_::Switch *output_switch_;
 
+  select::Select *operation_mode_select_;
+
   uint16_t char_handle_;
   std::vector<uint8_t> frame_buffer_;
   uint32_t last_frame_timestamp_ = 0;
@@ -222,6 +230,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
+  void publish_state_(switch_::Switch *switch_entity, const bool &state);
+  void publish_state_(select::Select *select_entity, const std::string &state);
   void send_next_request_();
   std::string operation_mode_to_string_(uint16_t mode);
   float power_rating_code_to_watts_(uint16_t code);

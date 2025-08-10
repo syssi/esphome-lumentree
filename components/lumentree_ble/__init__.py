@@ -5,7 +5,15 @@ from esphome.const import CONF_ID
 
 CODEOWNERS = ["@syssi"]
 
-AUTO_LOAD = ["binary_sensor", "sensor", "text_sensor", "button", "number", "switch"]
+AUTO_LOAD = [
+    "binary_sensor",
+    "sensor",
+    "text_sensor",
+    "button",
+    "number",
+    "switch",
+    "select",
+]
 MULTI_CONF = True
 
 CONF_LUMENTREE_BLE_ID = "lumentree_ble_id"

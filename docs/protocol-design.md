@@ -147,7 +147,7 @@ For comprehensive data collection, use a multi-request approach:
 
 | Register | Name | Type | Scaling | Description |
 |----------|------|------|---------|-------------|
-| 100 | Battery Type | Read/Write | Direct | Battery type selection (0=User, 1=AGM, 2=Lithium) |
+| 100 | Battery Settings Reset | Read/Write | Multi-Write | Battery configuration reset (write 5 zeros to reset all battery settings to defaults) |
 | 101 | Equalizing Charge Voltage | Read/Write | ÷100 | Equalization voltage in volts |
 | 102 | Boost Charge Voltage | Read/Write | ÷100 | Maximum charging voltage |
 | 103 | Floating Charge Voltage | Read/Write | ÷100 | Float charge voltage |

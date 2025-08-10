@@ -147,13 +147,17 @@ text_sensor:
     device_model:
       name: "${name} device model"
 
+select:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    operation_mode:
+      name: "${name} operation mode"
+
 button:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
-    factory_reset:
-      name: "${name} factory reset"
-    restart_device:
-      name: "${name} restart device"
+    battery_settings_reset:
+      name: "${name} battery settings reset"
 
 number:
   - platform: lumentree_ble

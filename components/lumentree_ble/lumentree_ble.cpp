@@ -387,6 +387,8 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         break;
       case 68:  // 0x44: Operation Mode
         this->publish_state_(this->operation_mode_text_sensor_, this->operation_mode_to_string_(register_value));
+        // Sync select entity with current mode
+        this->publish_state_(this->operation_mode_select_, this->operation_mode_to_string_(register_value));
         break;
       case 70:  // 0x46: Grid Connection Status
         this->publish_state_(this->grid_connected_binary_sensor_, register_value >= 7);
@@ -458,6 +460,8 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
         break;
       case 120:  // Charge from AC
         ESP_LOGI(TAG, "Charge from AC: %s", register_value == 1 ? "Enabled" : "Disabled");
+        // Sync AC charging switch
+        this->publish_state_(this->ac_charging_switch_, register_value == 1);
         break;
       case 123:  // AC Output Frequency
         ESP_LOGI(TAG, "AC Output Frequency: %s", register_value == 0 ? "50Hz" : "60Hz");
@@ -547,6 +551,8 @@ void LumentreeBle::decode_system_control_registers_(const std::vector<uint8_t> &
         break;
       case 170:  // Online Mode
         ESP_LOGI(TAG, "Online Mode: %s", register_value == 1 ? "Online" : "Offline");
+        // Sync output switch
+        this->publish_state_(this->output_switch_, register_value == 1);
         break;
       case 177:  // Maximum Current 5
         ESP_LOGI(TAG, "Maximum Current 5: %d A", register_value);
@@ -580,6 +586,20 @@ void LumentreeBle::publish_state_(text_sensor::TextSensor *text_sensor, const st
     return;
 
   text_sensor->publish_state(state);
+}
+
+void LumentreeBle::publish_state_(switch_::Switch *switch_entity, const bool &state) {
+  if (switch_entity == nullptr)
+    return;
+
+  switch_entity->publish_state(state);
+}
+
+void LumentreeBle::publish_state_(select::Select *select_entity, const std::string &state) {
+  if (select_entity == nullptr)
+    return;
+
+  select_entity->publish_state(state);
 }
 
 std::string LumentreeBle::operation_mode_to_string_(uint16_t mode) {
@@ -629,6 +649,29 @@ void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
   payload.push_back(register_address);
   payload.push_back((value >> 8) & 0xFF);
   payload.push_back(value & 0xFF);
+
+  this->send_command(payload);
+}
+
+void LumentreeBle::write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values) {
+  ESP_LOGI(TAG, "Writing %d registers starting at 0x%02X", values.size(), start_register);
+
+  uint8_t register_count = values.size();
+  uint8_t byte_count = register_count * 2;
+
+  std::vector<uint8_t> payload;
+  payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
+  payload.push_back(0x10);  // Function code 0x10 (Write Multiple Registers)
+  payload.push_back(0x00);
+  payload.push_back(start_register);
+  payload.push_back(0x00);
+  payload.push_back(register_count);
+  payload.push_back(byte_count);
+
+  for (uint16_t value : values) {
+    payload.push_back((value >> 8) & 0xFF);
+    payload.push_back(value & 0xFF);
+  }
 
   this->send_command(payload);
 }
