@@ -230,6 +230,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void publish_state_(binary_sensor::BinarySensor *binary_sensor, const bool &state);
   void publish_state_(sensor::Sensor *sensor, float value);
   void publish_state_(text_sensor::TextSensor *text_sensor, const std::string &state);
+  void publish_state_(switch_::Switch *switch_entity, const bool &state);
+  void publish_state_(select::Select *select_entity, const std::string &state);
   void send_next_request_();
   std::string operation_mode_to_string_(uint16_t mode);
   float power_rating_code_to_watts_(uint16_t code);

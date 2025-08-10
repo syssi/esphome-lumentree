@@ -388,10 +388,7 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
       case 68:  // 0x44: Operation Mode
         this->publish_state_(this->operation_mode_text_sensor_, this->operation_mode_to_string_(register_value));
         // Sync select entity with current mode
-        if (this->operation_mode_select_ != nullptr) {
-          std::string mode_string = this->operation_mode_to_string_(register_value);
-          this->operation_mode_select_->publish_state(mode_string);
-        }
+        this->publish_state_(this->operation_mode_select_, this->operation_mode_to_string_(register_value));
         break;
       case 70:  // 0x46: Grid Connection Status
         this->publish_state_(this->grid_connected_binary_sensor_, register_value >= 7);
@@ -463,6 +460,8 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
         break;
       case 120:  // Charge from AC
         ESP_LOGI(TAG, "Charge from AC: %s", register_value == 1 ? "Enabled" : "Disabled");
+        // Sync AC charging switch
+        this->publish_state_(this->ac_charging_switch_, register_value == 1);
         break;
       case 123:  // AC Output Frequency
         ESP_LOGI(TAG, "AC Output Frequency: %s", register_value == 0 ? "50Hz" : "60Hz");
@@ -552,6 +551,8 @@ void LumentreeBle::decode_system_control_registers_(const std::vector<uint8_t> &
         break;
       case 170:  // Online Mode
         ESP_LOGI(TAG, "Online Mode: %s", register_value == 1 ? "Online" : "Offline");
+        // Sync output switch
+        this->publish_state_(this->output_switch_, register_value == 1);
         break;
       case 177:  // Maximum Current 5
         ESP_LOGI(TAG, "Maximum Current 5: %d A", register_value);
@@ -585,6 +586,20 @@ void LumentreeBle::publish_state_(text_sensor::TextSensor *text_sensor, const st
     return;
 
   text_sensor->publish_state(state);
+}
+
+void LumentreeBle::publish_state_(switch_::Switch *switch_entity, const bool &state) {
+  if (switch_entity == nullptr)
+    return;
+
+  switch_entity->publish_state(state);
+}
+
+void LumentreeBle::publish_state_(select::Select *select_entity, const std::string &state) {
+  if (select_entity == nullptr)
+    return;
+
+  select_entity->publish_state(state);
 }
 
 std::string LumentreeBle::operation_mode_to_string_(uint16_t mode) {
