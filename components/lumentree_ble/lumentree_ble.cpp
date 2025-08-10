@@ -633,6 +633,29 @@ void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
   this->send_command(payload);
 }
 
+void LumentreeBle::write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values) {
+  ESP_LOGI(TAG, "Writing %d registers starting at 0x%02X", values.size(), start_register);
+
+  uint8_t register_count = values.size();
+  uint8_t byte_count = register_count * 2;
+
+  std::vector<uint8_t> payload;
+  payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
+  payload.push_back(0x10);  // Function code 0x10 (Write Multiple Registers)
+  payload.push_back(0x00);
+  payload.push_back(start_register);
+  payload.push_back(0x00);
+  payload.push_back(register_count);
+  payload.push_back(byte_count);
+
+  for (uint16_t value : values) {
+    payload.push_back((value >> 8) & 0xFF);
+    payload.push_back(value & 0xFF);
+  }
+
+  this->send_command(payload);
+}
+
 float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
   switch (code) {
     case 2:

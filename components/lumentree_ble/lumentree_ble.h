@@ -9,6 +9,7 @@
 #include "esphome/components/button/button.h"
 #include "esphome/components/number/number.h"
 #include "esphome/components/switch/switch.h"
+#include "esphome/components/select/select.h"
 
 #ifdef USE_ESP32
 
@@ -152,6 +153,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void assemble(const uint8_t *data, uint16_t length);
   void set_last_request(RequestType request_type);
   void write_register(uint8_t register_address, uint16_t value);
+  void write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values);
   void send_command(const std::vector<uint8_t> &payload);
   void read_registers(uint8_t function, uint16_t start_register, uint16_t register_count);
 

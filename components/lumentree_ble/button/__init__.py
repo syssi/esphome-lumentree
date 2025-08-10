@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import button
 import esphome.config_validation as cv
-from esphome.const import CONF_FACTORY_RESET, CONF_ID
+from esphome.const import CONF_ID
 
 from .. import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
@@ -9,14 +9,12 @@ DEPENDENCIES = ["lumentree_ble"]
 
 CODEOWNERS = ["@syssi"]
 
-CONF_RESTART_DEVICE = "restart_device"
+CONF_BATTERY_SETTINGS_RESET = "battery_settings_reset"
 
-ICON_FACTORY_RESET = "mdi:factory"
-ICON_RESTART_DEVICE = "mdi:restart"
+ICON_BATTERY_SETTINGS_RESET = "mdi:battery-sync"
 
 BUTTONS = {
-    CONF_FACTORY_RESET: 100,
-    CONF_RESTART_DEVICE: 101,
+    CONF_BATTERY_SETTINGS_RESET: 100,
 }
 
 LumentreeButton = lumentree_ble_ns.class_(
@@ -25,13 +23,9 @@ LumentreeButton = lumentree_ble_ns.class_(
 
 CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
     {
-        cv.Optional(CONF_FACTORY_RESET): button.button_schema(
+        cv.Optional(CONF_BATTERY_SETTINGS_RESET): button.button_schema(
             LumentreeButton,
-            icon=ICON_FACTORY_RESET,
-        ).extend(cv.COMPONENT_SCHEMA),
-        cv.Optional(CONF_RESTART_DEVICE): button.button_schema(
-            LumentreeButton,
-            icon=ICON_RESTART_DEVICE,
+            icon=ICON_BATTERY_SETTINGS_RESET,
         ).extend(cv.COMPONENT_SCHEMA),
     }
 )
