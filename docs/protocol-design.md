@@ -120,7 +120,7 @@ For comprehensive data collection, use a multi-request approach:
 | 3-7 | Serial Number | Read | ASCII | Device serial number (5 registers, 10 bytes ASCII) |
 | 8 | Device Power Rating | Read | Direct | Power rating code (2=5.5KW, 3=4.0KW, 5=6.0KW, other=3.6KW) |
 | 11 | Battery Voltage | Read | ÷100 | Battery voltage in volts |
-| 12 | Discharge Current | Read | ÷100 | Battery discharge current in amperes |
+| 12 | Battery Current | Read | ÷100 | Battery current in amperes (positive=discharge, negative=charge) |
 | 13 | Output Voltage | Read | ÷10 | AC output voltage |
 | 15 | Input Voltage | Read | ÷10 | AC input voltage |
 | 16 | Output Frequency | Read | ÷100 | AC output frequency in Hz |
@@ -128,17 +128,17 @@ For comprehensive data collection, use a multi-request approach:
 | 18 | Output Power | Read | Direct | AC output power in watts |
 | 20 | PV Input Voltage | Read | Direct | Solar panel voltage |
 | 22 | PV Input Power | Read | Direct | Solar panel power |
-| 24 | IGBT Temperature | Read | (÷10)-100 | IGBT temperature in °C (formula: (value-1000)/10) |
+| 24 | IGBT Temperature | Read | (value-1000)÷10 | IGBT temperature in °C (formula: (value-1000)/10) |
 | 37 | Battery Status | Read | Direct | Battery connection status code |
 | 50 | Battery SOC | Read | Direct | State of charge percentage |
 | 53 | Input Power | Read | Signed | Grid input power in watts |
-| 54 | Grid Export Power | Read | Signed | Grid exported power in watts (negative=export) |
+| 54 | Grid Export | Read | Signed | Grid export power in watts (positive=export, negative=import) |
 | 58 | Output VA | Read | Direct | AC output apparent power in VA |
 | 59 | Grid CT Power | Read | Direct | Grid CT power measurement in watts |
-| 61 | Discharge Power | Read | Signed | Battery discharge power in watts |
-| 67 | Family Load | Read | Direct | Total load consumption in watts |
-| 68 | Work Mode | Read | Direct | Operating mode code |
-| 70 | System Version | Read | Direct | Firmware version indicator |
+| 61 | Battery Power | Read | Signed | Battery power in watts (positive=discharge, negative=charge) |
+| 67 | Load Power | Read | Direct | Total load consumption in watts |
+| 68 | Operation Mode | Read | Direct | Operating mode code (0=Battery, 1=Hybrid, 2=Grid-Tie) |
+| 70 | Grid Connection Status | Read | Direct | Grid connection status (≥7=connected, <7=disconnected) |
 | 72 | PV2 Input Voltage | Read | Direct | Second PV input voltage |
 | 74 | PV2 Input Power | Read | Direct | Second PV input power |
 | 94 | Device Type Image | Read | Direct | Device type for display |
@@ -203,8 +203,8 @@ For comprehensive data collection, use a multi-request approach:
 #### Status Code Mappings
 
 - **Battery Status (Register 37)**: 0=Error, 1=Connected, 2=No Battery
-- **Work Mode (Register 68)**: 0=UPS Mode, 1=Hybrid Mode
-- **Grid Status (Register 70)**: ≥7=Connected, <7=Disconnected
+- **Operation Mode (Register 68)**: 0=Battery Mode, 1=Hybrid Mode, 2=Grid-Tie Mode
+- **Grid Connection Status (Register 70)**: ≥7=Connected, <7=Disconnected
 - **Device Type (Register 0)**: Identifies device model/generation
 - **PV2 Support (Register 1)**: 0x0102=PV2 Supported, Other=Single PV only
 
