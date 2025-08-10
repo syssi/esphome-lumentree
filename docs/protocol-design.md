@@ -268,16 +268,132 @@ For comprehensive data collection, use a multi-request approach:
 - Register addresses may overlap but contain different data types
 - Use Function 0x03 for sensor readings and real-time monitoring
 
+### Statistical Data Registers (Function 0x04)
+
+The device provides comprehensive historical energy statistics with multiple time granularities. All statistical data uses **Function 0x04 (Read Input Registers)** and includes automatic scaling (÷10 for kWh values).
+
+#### Today's Energy Totals (Registers 0-7)
+
+| Register | Data Category | Unit | Description |
+|----------|---------------|------|-------------|
+| 0 | PV Generation | kWh | Solar panel energy production today |
+| 1 | Essential Load | kWh | Critical load consumption today |
+| 2 | Grid Consumption | kWh | Energy imported from grid today |
+| 3 | Total Load | kWh | Total household consumption today |
+| 4 | Battery Charging | kWh | Energy stored in battery today |
+| 5 | Battery Discharge | kWh | Energy released from battery today |
+| 6-7 | Reserved | kWh | Additional energy statistics |
+
+**Scaling**: All values are stored as integers, divide by 10 to get actual kWh values.
+
+#### Daily Detailed Charts (5-minute intervals, 288 data points)
+
+Provides 24 hours of detailed energy data with 5-minute resolution (12 data points per hour).
+
+| Data Category | Register Range | Total Registers | Time Period Examples |
+|---------------|----------------|------------------|----------------------|
+| **PV Generation** | 0-287 | 288 | Solar generation per 5-min interval |
+| | 0-103 | 104 | Reg 8: 00:00-00:05, Reg 9: 00:05-00:10, Reg 10: 00:10-00:15, ... Reg 103: 07:55-08:00 |
+| | 104-199 | 96 | Reg 104: 08:00-08:05, Reg 105: 08:05-08:10, ... Reg 199: 15:55-16:00 |
+| | 200-295 | 96 | Reg 200: 16:00-16:05, Reg 201: 16:05-16:10, ... Reg 287: 23:55-00:00 |
+| **Essential Power** | 296-583 | 288 | Essential load per 5-min interval |
+| | 296-391 | 96 | Reg 296: 00:00-00:05, Reg 297: 00:05-00:10, ... Reg 391: 07:55-08:00 |
+| | 392-487 | 96 | Reg 392: 08:00-08:05, Reg 393: 08:05-08:10, ... Reg 487: 15:55-16:00 |
+| | 488-583 | 96 | Reg 488: 16:00-16:05, Reg 489: 16:05-16:10, ... Reg 583: 23:55-00:00 |
+| **Grid Power** | 584-871 | 288 | Grid consumption per 5-min interval |
+| | 584-679 | 96 | Reg 584: 00:00-00:05, Reg 585: 00:05-00:10, ... Reg 679: 07:55-08:00 |
+| | 680-775 | 96 | Reg 680: 08:00-08:05, Reg 681: 08:05-08:10, ... Reg 775: 15:55-16:00 |
+| | 776-871 | 96 | Reg 776: 16:00-16:05, Reg 777: 16:05-16:10, ... Reg 871: 23:55-00:00 |
+| **Home Load** | 872-1159 | 288 | Total load per 5-min interval |
+| | 872-967 | 96 | Reg 872: 00:00-00:05, Reg 873: 00:05-00:10, ... Reg 967: 07:55-08:00 |
+| | 968-1063 | 96 | Reg 968: 08:00-08:05, Reg 969: 08:05-08:10, ... Reg 1063: 15:55-16:00 |
+| | 1064-1159 | 96 | Reg 1064: 16:00-16:05, Reg 1065: 16:05-16:10, ... Reg 1159: 23:55-00:00 |
+
+#### Monthly Statistics (Daily totals for current month)
+
+Provides up to 31 daily energy totals for the current month.
+
+| Data Category | Register Base | Count | Daily Examples |
+|---------------|---------------|-------|----------------|
+| PV Generation | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+| Essential Power | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+| Grid Input | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+| Home Load | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+| Battery Charging | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+| Battery Discharge | Variable* | 31 | Reg N+0: Jan 1st, Reg N+1: Jan 2nd, Reg N+2: Jan 3rd, ... Reg N+30: Jan 31st |
+
+*Register addresses are dynamically mapped through Android app constants.
+
+#### Yearly Statistics (Monthly totals for current year)
+
+Provides 12 monthly energy totals for the current year.
+
+| Data Category | Register Base | Count | Monthly Examples |
+|---------------|---------------|-------|------------------|
+| PV Generation | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+| Essential Power | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+| Grid Input | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+| Home Load | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+| Battery Charging | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+| Battery Discharge | Variable* | 12 | Reg N+0: January, Reg N+1: February, Reg N+2: March, ... Reg N+11: December |
+
+*Register addresses are dynamically mapped through Android app constants.
+
+#### Historical Multi-Year Data (All-time statistics)
+
+Provides up to 16 years of annual energy totals.
+
+| Register | Data Category | Count | Year Examples |
+|----------|---------------|-------|---------------|
+| 1928-1943 | Year List | 16 | Reg 1928: 2008, Reg 1929: 2009, Reg 1930: 2010, ... Reg 1943: 2023 |
+| 1736-1767 | PV Generation | 16 | Reg 1736+1737: 2008, Reg 1738+1739: 2009, Reg 1740+1741: 2010, ... Reg 1766+1767: 2023 |
+| 1768-1799 | Essential Power | 16 | Reg 1768+1769: 2008, Reg 1770+1771: 2009, Reg 1772+1773: 2010, ... Reg 1798+1799: 2023 |
+| 1800-1831 | Grid Input | 16 | Reg 1800+1801: 2008, Reg 1802+1803: 2009, Reg 1804+1805: 2010, ... Reg 1830+1831: 2023 |
+| 1832-1863 | Home Load | 16 | Reg 1832+1833: 2008, Reg 1834+1835: 2009, Reg 1836+1837: 2010, ... Reg 1862+1863: 2023 |
+| 1864-1895 | Battery Charging | 16 | Reg 1864+1865: 2008, Reg 1866+1867: 2009, Reg 1868+1869: 2010, ... Reg 1894+1895: 2023 |
+| 1896-1927 | Battery Discharge | 16 | Reg 1896+1897: 2008, Reg 1898+1899: 2009, Reg 1900+1901: 2010, ... Reg 1926+1927: 2023 |
+
+**Data Format**: Each annual value uses 2 registers (32-bit) to store larger energy totals.
+
+#### Statistical Data Request Patterns
+
+**Today's Totals**: Single request
+```
+01 04 00 00 00 08 [CRC]  // Read registers 0-7 (8 registers)
+```
+
+**Daily 5-minute Charts**: Multiple requests per data category
+```
+01 04 00 00 00 68 [CRC]  // PV: Read registers 0-103 (104 registers)
+01 04 00 68 00 60 [CRC]  // PV: Read registers 104-199 (96 registers)
+01 04 00 C8 00 60 [CRC]  // PV: Read registers 200-295 (96 registers)
+```
+
+**Historical Multi-Year**: Sequential requests
+```
+01 04 07 88 00 10 [CRC]  // Read year list: registers 1928-1943 (16 registers)
+01 04 06 C8 00 20 [CRC]  // PV annual: registers 1736-1767 (32 registers)
+01 04 06 E8 00 20 [CRC]  // Essential annual: registers 1768-1799 (32 registers)
+```
+
 ### Multi-Register Operations
 
 #### Typical Read Ranges
 
-| Description | Start Register | Count | Purpose |
-|-------------|----------------|-------|---------|
-| Complete System Status | 0 | 95 | Full system overview |
-| Battery Settings | 100 | 57 | Complete battery configuration |
-| Historical Data | 80 | 96 | Daily power statistics |
-| Error Records | 2040 | 80 | Alarm and error logs |
+| Description | Function | Start Register | Count | Purpose |
+|-------------|----------|----------------|-------|---------|
+| Complete System Status | 0x03 | 0 | 95 | Full real-time system overview |
+| Battery Settings | 0x03 | 100 | 57 | Complete battery configuration |
+| System Control Settings | 0x03 | 160 | 21 | Device control parameters |
+| **Statistical Data** ||||
+| Today's Energy Totals | 0x04 | 0 | 8 | Current day energy statistics |
+| Daily PV Chart | 0x04 | 0 | 104+96+96 | 24h PV generation (5-min intervals) |
+| Daily Essential Chart | 0x04 | 296 | 96+96+96 | 24h essential load (5-min intervals) |
+| Daily Grid Chart | 0x04 | 584 | 96+96+96 | 24h grid consumption (5-min intervals) |
+| Daily Load Chart | 0x04 | 872 | 96+96+96 | 24h total load (5-min intervals) |
+| Historical Years List | 0x04 | 1928 | 16 | Available years for historical data |
+| Annual PV History | 0x04 | 1736 | 32 | Multi-year PV generation totals |
+| Annual Load History | 0x04 | 1832 | 32 | Multi-year load consumption totals |
 
 ### Protocol Limitations
 
