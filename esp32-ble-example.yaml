@@ -134,6 +134,8 @@ sensor:
       name: "${name} today battery charging"
     today_battery_discharge:
       name: "${name} today battery discharge"
+    grid_export:
+      name: "${name} grid export"
 
 text_sensor:
   - platform: lumentree_ble

@@ -95,6 +95,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_today_battery_discharge_sensor(sensor::Sensor *today_battery_discharge_sensor) {
     today_battery_discharge_sensor_ = today_battery_discharge_sensor;
   }
+  void set_grid_export_sensor(sensor::Sensor *grid_export_sensor) { grid_export_sensor_ = grid_export_sensor; }
 
   void set_grid_connected_binary_sensor(binary_sensor::BinarySensor *grid_connected_binary_sensor) {
     grid_connected_binary_sensor_ = grid_connected_binary_sensor;
@@ -180,6 +181,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   sensor::Sensor *today_grid_consumption_sensor_;
   sensor::Sensor *today_battery_charging_sensor_;
   sensor::Sensor *today_battery_discharge_sensor_;
+  sensor::Sensor *grid_export_sensor_;
 
   text_sensor::TextSensor *serial_number_text_sensor_;
   text_sensor::TextSensor *operation_mode_text_sensor_;

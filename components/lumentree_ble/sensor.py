@@ -56,6 +56,7 @@ CONF_TODAY_TOTAL_CONSUMPTION = "today_total_consumption"
 CONF_TODAY_GRID_CONSUMPTION = "today_grid_consumption"
 CONF_TODAY_BATTERY_CHARGING = "today_battery_charging"
 CONF_TODAY_BATTERY_DISCHARGE = "today_battery_discharge"
+CONF_GRID_EXPORT = "grid_export"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
@@ -235,6 +236,12 @@ SENSORS = {
         accuracy_decimals=1,
         device_class=DEVICE_CLASS_ENERGY,
         state_class=STATE_CLASS_TOTAL_INCREASING,
+    ),
+    CONF_GRID_EXPORT: sensor.sensor_schema(
+        unit_of_measurement=UNIT_WATT,
+        accuracy_decimals=0,
+        device_class=DEVICE_CLASS_POWER,
+        state_class=STATE_CLASS_MEASUREMENT,
     ),
 }
 

@@ -189,6 +189,7 @@ void LumentreeBle::dump_config() {
   LOG_SENSOR("  ", "Today Grid Consumption", this->today_grid_consumption_sensor_);
   LOG_SENSOR("  ", "Today Battery Charging", this->today_battery_charging_sensor_);
   LOG_SENSOR("  ", "Today Battery Discharge", this->today_battery_discharge_sensor_);
+  LOG_SENSOR("  ", "Grid Export", this->grid_export_sensor_);
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
@@ -363,6 +364,9 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         break;
       case 53:  // 0x35: Grid Input Power (signed)
         this->publish_state_(this->grid_power_sensor_, (int16_t) register_value * 1.0f);
+        break;
+      case 54:  // 0x36: Grid Export Power
+        this->publish_state_(this->grid_export_sensor_, (int16_t) register_value * 1.0f);
         break;
       case 58:  // 0x3A: AC Output VA/Apparent Power
         this->publish_state_(this->ac_output_apparent_power_sensor_, register_value * 1.0f);

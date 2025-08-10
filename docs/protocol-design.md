@@ -59,7 +59,7 @@ Standard MODBUS RTU format over BLE:
 |---------------|-------|--------|-------------|---------------|
 | 0 | Slave Address | 1 Byte | Device address | `0x01` |
 | 1 | Function Code | 1 Byte | Write Multiple Registers | `0x10` |
-| 2-3 | Register Address | 2 Bytes | Start register (Big Endian) | `0x0028` (Register 40) |
+| 2-3 | Register Address | 2 Bytes | Start register (Big Endian) | `0x0064` (Register 100) |
 | 4-5 | Register Count | 2 Bytes | Number of registers (Big Endian) | `0x0001` |
 | 6 | Byte Count | 1 Byte | Number of data bytes | `0x02` |
 | 7-8 | Data Bytes | 2 Bytes | Write value (Big Endian) | Value |
@@ -132,7 +132,7 @@ For comprehensive data collection, use a multi-request approach:
 | 37 | Battery Status | Read | Direct | Battery connection status code |
 | 50 | Battery SOC | Read | Direct | State of charge percentage |
 | 53 | Input Power | Read | Signed | Grid input power in watts |
-| 54 | Input Current | Read | Direct | AC input current in amperes |
+| 54 | Grid Export Power | Read | Signed | Grid exported power in watts (negative=export) |
 | 58 | Output VA | Read | Direct | AC output apparent power in VA |
 | 59 | Grid CT Power | Read | Direct | Grid CT power measurement in watts |
 | 61 | Discharge Power | Read | Signed | Battery discharge power in watts |
