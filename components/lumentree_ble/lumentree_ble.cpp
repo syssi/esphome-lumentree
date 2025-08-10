@@ -387,6 +387,11 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
         break;
       case 68:  // 0x44: Operation Mode
         this->publish_state_(this->operation_mode_text_sensor_, this->operation_mode_to_string_(register_value));
+        // Sync select entity with current mode
+        if (this->operation_mode_select_ != nullptr) {
+          std::string mode_string = this->operation_mode_to_string_(register_value);
+          this->operation_mode_select_->publish_state(mode_string);
+        }
         break;
       case 70:  // 0x46: Grid Connection Status
         this->publish_state_(this->grid_connected_binary_sensor_, register_value >= 7);

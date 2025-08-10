@@ -150,6 +150,10 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_ac_charging_switch(switch_::Switch *ac_charging_switch) { ac_charging_switch_ = ac_charging_switch; }
   void set_output_switch(switch_::Switch *output_switch) { output_switch_ = output_switch; }
 
+  void set_operation_mode_select(select::Select *operation_mode_select) {
+    operation_mode_select_ = operation_mode_select;
+  }
+
   void assemble(const uint8_t *data, uint16_t length);
   void set_last_request(RequestType request_type);
   void write_register(uint8_t register_address, uint16_t value);
@@ -209,6 +213,8 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
 
   switch_::Switch *ac_charging_switch_;
   switch_::Switch *output_switch_;
+
+  select::Select *operation_mode_select_;
 
   uint16_t char_handle_;
   std::vector<uint8_t> frame_buffer_;

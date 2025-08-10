@@ -45,3 +45,6 @@ async def to_code(config):
         # Add option mapping
         for option, value in OPERATION_MODE_OPTIONS.items():
             cg.add(var.add_option_mapping(option, value))
+
+        # Register with hub for sync with register 68
+        cg.add(hub.set_operation_mode_select(var))
