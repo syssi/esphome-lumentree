@@ -154,6 +154,11 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   this->frame_buffer_.clear();
 }
 
+void LumentreeBle::set_last_request(RequestType request_type) {
+  ESP_LOGD(TAG, "Setting last request type to %d", request_type);
+  this->current_request_type_ = request_type;
+}
+
 void LumentreeBle::dump_config() {
   ESP_LOGCONFIG(TAG, "Lumentree BLE:");
   LOG_BINARY_SENSOR("  ", "Grid Connected", this->grid_connected_binary_sensor_);

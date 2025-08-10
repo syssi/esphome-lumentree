@@ -21,6 +21,14 @@ namespace espbt = esphome::esp32_ble_tracker;
 
 class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingComponent {
  public:
+  enum RequestType {
+    REQUEST_SYSTEM_STATUS,
+    REQUEST_BATTERY_CONFIG,
+    REQUEST_SYSTEM_CONTROL,
+    REQUEST_DAILY_STATISTICS,
+    REQUEST_COMPLETE
+  };
+
   void gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                            esp_ble_gattc_cb_param_t *param) override;
   void dump_config() override;
@@ -142,6 +150,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void set_output_switch(switch_::Switch *output_switch) { output_switch_ = output_switch; }
 
   void assemble(const uint8_t *data, uint16_t length);
+  void set_last_request(RequestType request_type);
   void write_register(uint8_t register_address, uint16_t value);
   void send_command(const std::vector<uint8_t> &payload);
   void read_registers(uint8_t function, uint16_t start_register, uint16_t register_count);
@@ -203,14 +212,6 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   std::vector<uint8_t> frame_buffer_;
   uint32_t last_frame_timestamp_ = 0;
 
-  // Request tracking
-  enum RequestType {
-    REQUEST_SYSTEM_STATUS,
-    REQUEST_BATTERY_CONFIG,
-    REQUEST_SYSTEM_CONTROL,
-    REQUEST_DAILY_STATISTICS,
-    REQUEST_COMPLETE
-  };
   RequestType current_request_type_ = REQUEST_SYSTEM_STATUS;
 
   void decode_(const std::vector<uint8_t> &data);
