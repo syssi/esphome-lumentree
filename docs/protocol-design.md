@@ -134,7 +134,7 @@ For comprehensive data collection, use a multi-request approach:
 | 53 | Input Power | Read | Signed | Grid input power in watts |
 | 54 | Grid Export | Read | Signed | Grid export power in watts (positive=export, negative=import) |
 | 58 | Output VA | Read | Direct | AC output apparent power in VA |
-| 59 | Grid CT Power | Read | Direct | Grid CT power measurement in watts |
+| 59 | Grid CT Power | Read | Signed | Grid CT power measurement in watts |
 | 61 | Battery Power | Read | Signed | Battery power in watts (positive=discharge, negative=charge) |
 | 67 | Load Power | Read | Direct | Total load consumption in watts |
 | 68 | Operation Mode | Read | Direct | Operating mode code (0=Battery, 1=Hybrid, 2=Grid-Tie) |

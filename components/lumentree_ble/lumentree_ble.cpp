@@ -376,8 +376,8 @@ void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &d
       case 58:  // 0x3A: AC Output VA/Apparent Power
         this->publish_state_(this->ac_output_apparent_power_sensor_, register_value * 1.0f);
         break;
-      case 59:  // 0x3B: Grid CT Power
-        this->publish_state_(this->grid_ct_power_sensor_, register_value * 1.0f);
+      case 59:  // 0x3B: Grid CT Power (signed)
+        this->publish_state_(this->grid_ct_power_sensor_, (int16_t) register_value * 1.0f);
         break;
       case 61:  // 0x3D: Battery Power (signed)
         this->publish_state_(this->battery_power_sensor_, (int16_t) register_value * 1.0f);
