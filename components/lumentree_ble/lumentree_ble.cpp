@@ -17,11 +17,11 @@ struct DeviceModel {
 };
 
 static const DeviceModel DEVICE_MODELS[] = {
-    {200, 1, true, "RENOGE"},           {300, 1, false, "SUNT-3.6KW-P"}, {300, 1, true, "SUNT-3.6KW-H"},
-    {300, 2, false, "SUNT-5.5KW-P"},    {300, 2, true, "SUNT-5.5KW-H"},  {300, 3, false, "SUNT-4.0KW-US-P"},
-    {300, 4, true, "6KW-ESP"},          {300, 5, false, "SUNT-6.0KW-P"}, {300, 5, true, "SUNT-6.0KW-H"},
-    {300, 6, false, "SUNT-8KW-T-test"}, {300, 6, true, "SUNT-8KW-H"},    {300, 7, false, "SUNT-4.0KW-P"},
-    {300, 7, true, "SUNT-4.0KW-H"}};
+    {0x0200, 1, true, "RENOGE"},           {0x0300, 1, false, "SUNT-3.6KW-P"}, {0x0300, 1, true, "SUNT-3.6KW-H"},
+    {0x0300, 2, false, "SUNT-5.5KW-P"},    {0x0300, 2, true, "SUNT-5.5KW-H"},  {0x0300, 3, false, "SUNT-4.0KW-US-P"},
+    {0x0300, 4, true, "6KW-ESP"},          {0x0300, 5, false, "SUNT-6.0KW-P"}, {0x0300, 5, true, "SUNT-6.0KW-H"},
+    {0x0300, 6, false, "SUNT-8KW-T-test"}, {0x0300, 6, true, "SUNT-8KW-H"},    {0x0300, 7, false, "SUNT-4.0KW-P"},
+    {0x0300, 7, true, "SUNT-4.0KW-H"}};
 
 static const uint16_t LUMENTREE_SERVICE_UUID = 0xFFE0;
 static const uint16_t LUMENTREE_NOTIFY_CHARACTERISTIC_UUID = 0xFFE1;
