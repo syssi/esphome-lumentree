@@ -92,7 +92,7 @@ esphome run esp32-ble-example.yaml
 [sensor:104]: 'lumentree-inverter pv2 voltage': Sending state 433.00000 V with 0 decimals of accuracy
 [sensor:104]: 'lumentree-inverter pv2 power': Sending state 280.00000 W with 0 decimals of accuracy
 [sensor:104]: 'lumentree-inverter device type image': Sending state 1.00000  with 0 decimals of accuracy
-[text_sensor:069]: 'lumentree-inverter device model': Sending state 'Unknown (Type=768, Power=5, Engine=0)'
+[text_sensor:069]: 'lumentree-inverter device model': Sending state 'SUNT-6.0KW-P'
 
 [lumentree_ble:150]: Register data frame received
 [lumentree_ble:151]:   01.03.72.16.44.15.E0.15.E0.01.40.00.00.00.64.00.64.00.00.00.00.00.00.00.14.00.14.00.00.00.00.00.00.00.00.14.B4.14.50.00.00.00.00.00.00.00.00.00.00.00.00.00.01.00.00.00.00.00.00.00.00.01.67.00.01.00.00.00.01.00.00.00.01.00.00.00.00.08.FC.09.37.00.00.05.32.00.00.00.3C.00.14.00.38.00.34.00.00.00.5A.00.3C.00.01.00.00.00.00.15.E0.13.24.15.E0.14.50.00.64.EA.A4 (119)
