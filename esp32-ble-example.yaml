@@ -26,7 +26,11 @@ wifi:
   password: !secret wifi_password
 
 ota:
-  - platform: esphome
+  platform: esphome
+  on_begin:
+    then:
+      - switch.turn_off: ble_client_switch0
+      - logger.log: "BLE connection suspended for OTA update"
 
 logger:
   level: VERY_VERBOSE
@@ -153,6 +157,20 @@ select:
     operation_mode:
       name: "${name} operation mode"
 
+switch:
+  - platform: lumentree_ble
+    lumentree_ble_id: inverter0
+    ac_charging:
+      name: "${name} ac charging"
+    output:
+      name: "${name} output"
+
+  - platform: ble_client
+    ble_client_id: client0
+    name: "${name} enable bluetooth connection"
+    id: ble_client_switch0
+
+
 button:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
@@ -173,11 +191,3 @@ number:
     battery_capacity_setting:
       name: "${name} battery capacity setting"
       unit_of_measurement: "Ah"
-
-switch:
-  - platform: lumentree_ble
-    lumentree_ble_id: inverter0
-    ac_charging:
-      name: "${name} ac charging"
-    output:
-      name: "${name} output"
