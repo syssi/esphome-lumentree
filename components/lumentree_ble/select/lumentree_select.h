@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include "esphome/core/component.h"
 #include "esphome/components/select/select.h"
 #include "../lumentree_ble.h"
