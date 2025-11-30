@@ -1,6 +1,13 @@
 #include "lumentree_ble.h"
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
+#include "esphome/core/version.h"
+
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2025, 12, 0)
+#define ADDR_STR(x) x
+#else
+#define ADDR_STR(x) (x).c_str()
+#endif
 
 #ifdef USE_ESP32
 
@@ -37,24 +44,24 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
                                        esp_ble_gattc_cb_param_t *param) {
   switch (event) {
     case ESP_GATTC_OPEN_EVT: {
-      ESP_LOGI(TAG, "[%s] Connected", this->parent_->address_str());
+      ESP_LOGI(TAG, "[%s] Connected", ADDR_STR(this->parent_->address_str()));
       break;
     }
     case ESP_GATTC_DISCONNECT_EVT: {
-      ESP_LOGW(TAG, "[%s] Disconnected", this->parent_->address_str());
+      ESP_LOGW(TAG, "[%s] Disconnected", ADDR_STR(this->parent_->address_str()));
       this->frame_buffer_.clear();
       break;
     }
     case ESP_GATTC_SEARCH_CMPL_EVT: {
       auto *service = this->parent_->get_service(LUMENTREE_SERVICE_UUID);
       if (service == nullptr) {
-        ESP_LOGE(TAG, "[%s] No service found at 0x%04X", this->parent_->address_str(), LUMENTREE_SERVICE_UUID);
+        ESP_LOGE(TAG, "[%s] No service found at 0x%04X", ADDR_STR(this->parent_->address_str()), LUMENTREE_SERVICE_UUID);
         break;
       }
 
       auto *ble_char = service->get_characteristic(LUMENTREE_NOTIFY_CHARACTERISTIC_UUID);
       if (ble_char == nullptr) {
-        ESP_LOGE(TAG, "[%s] No characteristic found at 0x%04X", this->parent_->address_str(),
+        ESP_LOGE(TAG, "[%s] No characteristic found at 0x%04X", ADDR_STR(this->parent_->address_str()),
                  LUMENTREE_NOTIFY_CHARACTERISTIC_UUID);
         break;
       }
@@ -64,18 +71,18 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
       auto status = esp_ble_gattc_register_for_notify(this->parent_->get_gattc_if(), this->parent_->get_remote_bda(),
                                                       ble_char->handle);
       if (status) {
-        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d", this->parent_->address_str(), status);
+        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d", ADDR_STR(this->parent_->address_str()), status);
       }
       break;
     }
     case ESP_GATTC_REG_FOR_NOTIFY_EVT: {
       this->node_state = esp32_ble_tracker::ClientState::ESTABLISHED;
-      ESP_LOGI(TAG, "[%s] BLE connection established", this->parent_->address_str());
+      ESP_LOGI(TAG, "[%s] BLE connection established", ADDR_STR(this->parent_->address_str()));
       break;
     }
     case ESP_GATTC_NOTIFY_EVT: {
       if (param->notify.handle == this->char_handle_) {
-        ESP_LOGVV(TAG, "[%s] Notification received: %s", this->parent_->address_str(),
+        ESP_LOGVV(TAG, "[%s] Notification received: %s", ADDR_STR(this->parent_->address_str()),
                   format_hex_pretty(param->notify.value, param->notify.value_len).c_str());
         this->assemble(param->notify.value, param->notify.value_len);
       }
@@ -201,13 +208,13 @@ void LumentreeBle::dump_config() {
 
 void LumentreeBle::update() {
   if (this->node_state != esp32_ble_tracker::ClientState::ESTABLISHED) {
-    ESP_LOGW(TAG, "[%s] Not connected", this->parent_->address_str());
+    ESP_LOGW(TAG, "[%s] Not connected", ADDR_STR(this->parent_->address_str()));
     return;
   }
 
   // Reset request sequence and start with system status
   this->current_request_type_ = REQUEST_SYSTEM_STATUS;
-  ESP_LOGD(TAG, "[%s] Starting register data requests", this->parent_->address_str());
+  ESP_LOGD(TAG, "[%s] Starting register data requests", ADDR_STR(this->parent_->address_str()));
   this->send_next_request_();
 }
 
@@ -218,13 +225,13 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   frame.push_back(crc & 0xFF);
   frame.push_back((crc >> 8) & 0xFF);
 
-  ESP_LOGVV(TAG, "[%s] Command frame: %s", this->parent_->address_str(), format_hex_pretty(frame).c_str());
+  ESP_LOGVV(TAG, "[%s] Command frame: %s", ADDR_STR(this->parent_->address_str()), format_hex_pretty(frame).c_str());
 
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
                                          this->char_handle_, frame.size(), const_cast<uint8_t *>(frame.data()),
                                          ESP_GATT_WRITE_TYPE_NO_RSP, ESP_GATT_AUTH_REQ_NONE);
   if (status) {
-    ESP_LOGW(TAG, "[%s] Error sending command, status=%d", this->parent_->address_str(), status);
+    ESP_LOGW(TAG, "[%s] Error sending command, status=%d", ADDR_STR(this->parent_->address_str()), status);
   }
 }
 
@@ -237,7 +244,7 @@ void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uin
   payload.push_back((register_count >> 8) & 0xFF);
   payload.push_back(register_count & 0xFF);
 
-  ESP_LOGD(TAG, "[%s] Reading Registers (0x%02X): start=0x%04X, count=%d", this->parent_->address_str(), function,
+  ESP_LOGD(TAG, "[%s] Reading Registers (0x%02X): start=0x%04X, count=%d", ADDR_STR(this->parent_->address_str()), function,
            start_register, register_count);
 
   this->send_command(payload);
