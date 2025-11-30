@@ -55,7 +55,8 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
     case ESP_GATTC_SEARCH_CMPL_EVT: {
       auto *service = this->parent_->get_service(LUMENTREE_SERVICE_UUID);
       if (service == nullptr) {
-        ESP_LOGE(TAG, "[%s] No service found at 0x%04X", ADDR_STR(this->parent_->address_str()), LUMENTREE_SERVICE_UUID);
+        ESP_LOGE(TAG, "[%s] No service found at 0x%04X", ADDR_STR(this->parent_->address_str()),
+                 LUMENTREE_SERVICE_UUID);
         break;
       }
 
@@ -71,7 +72,8 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
       auto status = esp_ble_gattc_register_for_notify(this->parent_->get_gattc_if(), this->parent_->get_remote_bda(),
                                                       ble_char->handle);
       if (status) {
-        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d", ADDR_STR(this->parent_->address_str()), status);
+        ESP_LOGW(TAG, "[%s] esp_ble_gattc_register_for_notify failed, status=%d",
+                 ADDR_STR(this->parent_->address_str()), status);
       }
       break;
     }
@@ -244,8 +246,8 @@ void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uin
   payload.push_back((register_count >> 8) & 0xFF);
   payload.push_back(register_count & 0xFF);
 
-  ESP_LOGD(TAG, "[%s] Reading Registers (0x%02X): start=0x%04X, count=%d", ADDR_STR(this->parent_->address_str()), function,
-           start_register, register_count);
+  ESP_LOGD(TAG, "[%s] Reading Registers (0x%02X): start=0x%04X, count=%d", ADDR_STR(this->parent_->address_str()),
+           function, start_register, register_count);
 
   this->send_command(payload);
 }
