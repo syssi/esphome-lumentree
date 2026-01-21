@@ -85,7 +85,7 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
     case ESP_GATTC_NOTIFY_EVT: {
       if (param->notify.handle == this->char_handle_) {
         ESP_LOGVV(TAG, "[%s] Notification received: %s", ADDR_STR(this->parent_->address_str()),
-                  format_hex_pretty(param->notify.value, param->notify.value_len).c_str());
+                  format_hex_pretty(param->notify.value, param->notify.value_len).c_str());  // NOLINT
         this->assemble(param->notify.value, param->notify.value_len);
       }
       break;
@@ -156,7 +156,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   }
 
   ESP_LOGI(TAG, "Register data frame received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&this->frame_buffer_.front(), this->frame_buffer_.size()).c_str());
+  ESP_LOGD(TAG, "  %s", format_hex_pretty(&this->frame_buffer_.front(), this->frame_buffer_.size()).c_str());  // NOLINT
 
   this->decode_(this->frame_buffer_);
   this->frame_buffer_.clear();
@@ -227,7 +227,8 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   frame.push_back(crc & 0xFF);
   frame.push_back((crc >> 8) & 0xFF);
 
-  ESP_LOGVV(TAG, "[%s] Command frame: %s", ADDR_STR(this->parent_->address_str()), format_hex_pretty(frame).c_str());
+  ESP_LOGVV(TAG, "[%s] Command frame: %s", ADDR_STR(this->parent_->address_str()),
+            format_hex_pretty(frame).c_str());  // NOLINT
 
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
                                          this->char_handle_, frame.size(), const_cast<uint8_t *>(frame.data()),
