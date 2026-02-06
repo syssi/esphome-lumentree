@@ -30,6 +30,18 @@ static const DeviceModel DEVICE_MODELS[] = {
     {0x0300, 6, false, "SUNT-8KW-T-test"}, {0x0300, 6, true, "SUNT-8KW-H"},    {0x0300, 7, false, "SUNT-4.0KW-P"},
     {0x0300, 7, true, "SUNT-4.0KW-H"}};
 
+static std::string format_unknown_mode(uint16_t mode) {
+  char buf[32];
+  snprintf(buf, sizeof(buf), "Unknown (0x%04X)", mode);
+  return buf;
+}
+
+static std::string format_unknown_device(uint16_t device_type, uint16_t power_rating, int engine) {
+  char buf[64];
+  snprintf(buf, sizeof(buf), "Unknown (Type=%d, Power=%d, Engine=%d)", device_type, power_rating, engine);
+  return buf;
+}
+
 static const uint16_t LUMENTREE_SERVICE_UUID = 0xFFE0;
 static const uint16_t LUMENTREE_NOTIFY_CHARACTERISTIC_UUID = 0xFFE1;
 
@@ -620,7 +632,7 @@ std::string LumentreeBle::operation_mode_to_string_(uint16_t mode) {
     case 2:
       return "Grid-Tie Mode";
     default:
-      return str_snprintf("Unknown (0x%04X)", 17, mode);
+      return format_unknown_mode(mode);
   }
 }
 
@@ -747,7 +759,7 @@ std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t 
     }
   }
 
-  return str_snprintf("Unknown (Type=%d, Power=%d, Engine=%d)", 40, device_type, power_rating, light_engine ? 1 : 0);
+  return format_unknown_device(device_type, power_rating, light_engine ? 1 : 0);
 }
 
 }  // namespace lumentree_ble
