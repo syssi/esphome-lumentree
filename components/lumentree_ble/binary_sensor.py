@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 from esphome.components import binary_sensor
 import esphome.config_validation as cv
-from esphome.const import DEVICE_CLASS_CONNECTIVITY
+from esphome.const import DEVICE_CLASS_CONNECTIVITY, ENTITY_CATEGORY_DIAGNOSTIC
 
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
@@ -16,12 +16,15 @@ LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 BINARY_SENSORS = {
     CONF_GRID_CONNECTED: binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
     CONF_BATTERY_CONNECTED: binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
     CONF_PV2_SUPPORT: binary_sensor.binary_sensor_schema(
         device_class=DEVICE_CLASS_CONNECTIVITY,
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
 }
 
