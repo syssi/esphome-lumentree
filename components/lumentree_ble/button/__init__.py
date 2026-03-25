@@ -26,7 +26,7 @@ CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
         cv.Optional(CONF_BATTERY_SETTINGS_RESET): button.button_schema(
             LumentreeButton,
             icon=ICON_BATTERY_SETTINGS_RESET,
-        ).extend(cv.COMPONENT_SCHEMA),
+        ),
     }
 )
 

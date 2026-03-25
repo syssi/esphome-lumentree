@@ -25,7 +25,7 @@ CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
         cv.Optional(CONF_OPERATION_MODE): select.select_schema(
             LumentreeSelect,
             icon="mdi:cog",
-        ).extend(cv.COMPONENT_SCHEMA),
+        ),
     }
 )
 
