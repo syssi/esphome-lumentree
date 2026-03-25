@@ -162,59 +162,59 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   void read_registers(uint8_t function, uint16_t start_register, uint16_t register_count);
 
  protected:
-  binary_sensor::BinarySensor *grid_connected_binary_sensor_;
-  binary_sensor::BinarySensor *battery_connected_binary_sensor_;
-  binary_sensor::BinarySensor *pv2_support_binary_sensor_;
+  binary_sensor::BinarySensor *grid_connected_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *battery_connected_binary_sensor_{nullptr};
+  binary_sensor::BinarySensor *pv2_support_binary_sensor_{nullptr};
 
-  sensor::Sensor *battery_voltage_sensor_;
-  sensor::Sensor *battery_current_sensor_;
-  sensor::Sensor *battery_power_sensor_;
-  sensor::Sensor *battery_soc_sensor_;
-  sensor::Sensor *ac_output_voltage_sensor_;
-  sensor::Sensor *ac_input_voltage_sensor_;
-  sensor::Sensor *ac_output_frequency_sensor_;
-  sensor::Sensor *ac_input_frequency_sensor_;
-  sensor::Sensor *ac_power_sensor_;
-  sensor::Sensor *pv_voltage_sensor_;
-  sensor::Sensor *pv_power_sensor_;
-  sensor::Sensor *grid_power_sensor_;
-  sensor::Sensor *load_power_sensor_;
-  sensor::Sensor *device_temperature_sensor_;
-  sensor::Sensor *pv2_voltage_sensor_;
-  sensor::Sensor *pv2_power_sensor_;
-  sensor::Sensor *device_type_image_sensor_;
-  sensor::Sensor *battery_status_sensor_;
-  sensor::Sensor *grid_connection_status_sensor_;
-  sensor::Sensor *device_type_sensor_;
-  sensor::Sensor *device_power_rating_code_sensor_;
-  sensor::Sensor *device_power_rating_sensor_;
-  sensor::Sensor *ac_output_apparent_power_sensor_;
-  sensor::Sensor *grid_ct_power_sensor_;
-  sensor::Sensor *today_pv_production_sensor_;
-  sensor::Sensor *today_essential_load_sensor_;
-  sensor::Sensor *today_total_consumption_sensor_;
-  sensor::Sensor *today_grid_consumption_sensor_;
-  sensor::Sensor *today_battery_charging_sensor_;
-  sensor::Sensor *today_battery_discharge_sensor_;
-  sensor::Sensor *grid_export_sensor_;
+  sensor::Sensor *battery_voltage_sensor_{nullptr};
+  sensor::Sensor *battery_current_sensor_{nullptr};
+  sensor::Sensor *battery_power_sensor_{nullptr};
+  sensor::Sensor *battery_soc_sensor_{nullptr};
+  sensor::Sensor *ac_output_voltage_sensor_{nullptr};
+  sensor::Sensor *ac_input_voltage_sensor_{nullptr};
+  sensor::Sensor *ac_output_frequency_sensor_{nullptr};
+  sensor::Sensor *ac_input_frequency_sensor_{nullptr};
+  sensor::Sensor *ac_power_sensor_{nullptr};
+  sensor::Sensor *pv_voltage_sensor_{nullptr};
+  sensor::Sensor *pv_power_sensor_{nullptr};
+  sensor::Sensor *grid_power_sensor_{nullptr};
+  sensor::Sensor *load_power_sensor_{nullptr};
+  sensor::Sensor *device_temperature_sensor_{nullptr};
+  sensor::Sensor *pv2_voltage_sensor_{nullptr};
+  sensor::Sensor *pv2_power_sensor_{nullptr};
+  sensor::Sensor *device_type_image_sensor_{nullptr};
+  sensor::Sensor *battery_status_sensor_{nullptr};
+  sensor::Sensor *grid_connection_status_sensor_{nullptr};
+  sensor::Sensor *device_type_sensor_{nullptr};
+  sensor::Sensor *device_power_rating_code_sensor_{nullptr};
+  sensor::Sensor *device_power_rating_sensor_{nullptr};
+  sensor::Sensor *ac_output_apparent_power_sensor_{nullptr};
+  sensor::Sensor *grid_ct_power_sensor_{nullptr};
+  sensor::Sensor *today_pv_production_sensor_{nullptr};
+  sensor::Sensor *today_essential_load_sensor_{nullptr};
+  sensor::Sensor *today_total_consumption_sensor_{nullptr};
+  sensor::Sensor *today_grid_consumption_sensor_{nullptr};
+  sensor::Sensor *today_battery_charging_sensor_{nullptr};
+  sensor::Sensor *today_battery_discharge_sensor_{nullptr};
+  sensor::Sensor *grid_export_sensor_{nullptr};
 
-  text_sensor::TextSensor *serial_number_text_sensor_;
-  text_sensor::TextSensor *operation_mode_text_sensor_;
-  text_sensor::TextSensor *device_model_text_sensor_;
+  text_sensor::TextSensor *serial_number_text_sensor_{nullptr};
+  text_sensor::TextSensor *operation_mode_text_sensor_{nullptr};
+  text_sensor::TextSensor *device_model_text_sensor_{nullptr};
 
-  button::Button *factory_reset_button_;
-  button::Button *restart_device_button_;
+  button::Button *factory_reset_button_{nullptr};
+  button::Button *restart_device_button_{nullptr};
 
-  number::Number *power_output_setting_number_;
-  number::Number *equalization_voltage_setting_number_;
-  number::Number *charging_target_voltage_setting_number_;
-  number::Number *float_charge_voltage_setting_number_;
-  number::Number *battery_capacity_setting_number_;
+  number::Number *power_output_setting_number_{nullptr};
+  number::Number *equalization_voltage_setting_number_{nullptr};
+  number::Number *charging_target_voltage_setting_number_{nullptr};
+  number::Number *float_charge_voltage_setting_number_{nullptr};
+  number::Number *battery_capacity_setting_number_{nullptr};
 
-  switch_::Switch *ac_charging_switch_;
-  switch_::Switch *output_switch_;
+  switch_::Switch *ac_charging_switch_{nullptr};
+  switch_::Switch *output_switch_{nullptr};
 
-  select::Select *operation_mode_select_;
+  select::Select *operation_mode_select_{nullptr};
 
   uint16_t char_handle_;
   std::vector<uint8_t> frame_buffer_;
