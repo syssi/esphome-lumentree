@@ -34,9 +34,7 @@ async def to_code(config):
     hub = await cg.get_variable(config[CONF_LUMENTREE_BLE_ID])
     if CONF_OPERATION_MODE in config:
         conf = config[CONF_OPERATION_MODE]
-        var = await select.new_select(
-            conf, options=list(OPERATION_MODE_OPTIONS.keys())
-        )
+        var = await select.new_select(conf, options=list(OPERATION_MODE_OPTIONS.keys()))
         await cg.register_component(var, conf)
         cg.add(var.set_parent(hub))
         cg.add(var.set_holding_register(150))  # Work Mode Setting register
