@@ -29,11 +29,11 @@ CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
         cv.Optional(CONF_AC_CHARGING): switch.switch_schema(
             LumentreeSwitch,
             icon=ICON_AC_CHARGING,
-        ).extend(cv.COMPONENT_SCHEMA),
+        ),
         cv.Optional(CONF_OUTPUT): switch.switch_schema(
             LumentreeSwitch,
             icon=ICON_OUTPUT,
-        ).extend(cv.COMPONENT_SCHEMA),
+        ),
     }
 )
 
