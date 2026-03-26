@@ -8,7 +8,6 @@ from esphome.const import (
     CONF_STEP,
     CONF_UNIT_OF_MEASUREMENT,
     ENTITY_CATEGORY_CONFIG,
-    ICON_EMPTY,
     UNIT_VOLT,
     UNIT_WATT,
 )
@@ -44,7 +43,7 @@ LumentreeNumber = lumentree_ble_ns.class_(
 LUMENTREE_NUMBER_SCHEMA = (
     number.number_schema(
         LumentreeNumber,
-        icon=ICON_EMPTY,
+        icon=None,
         entity_category=ENTITY_CATEGORY_CONFIG,
         unit_of_measurement=UNIT_VOLT,
     )
