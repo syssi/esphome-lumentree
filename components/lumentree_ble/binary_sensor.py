@@ -6,6 +6,7 @@ from esphome.const import DEVICE_CLASS_CONNECTIVITY, ENTITY_CATEGORY_DIAGNOSTIC
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
 DEPENDENCIES = ["lumentree_ble"]
+CODEOWNERS = ["@syssi"]
 
 CONF_GRID_CONNECTED = "grid_connected"
 CONF_BATTERY_CONNECTED = "battery_connected"

@@ -6,6 +6,7 @@ from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
 DEPENDENCIES = ["lumentree_ble"]
+CODEOWNERS = ["@syssi"]
 
 CONF_SERIAL_NUMBER = "serial_number"
 CONF_OPERATION_MODE = "operation_mode"
