@@ -25,6 +25,7 @@ from esphome.const import (
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
 DEPENDENCIES = ["lumentree_ble"]
+CODEOWNERS = ["@syssi"]
 
 # CONF_BATTERY_VOLTAGE = "battery_voltage"
 CONF_BATTERY_CURRENT = "battery_current"
