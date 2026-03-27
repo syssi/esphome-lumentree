@@ -216,7 +216,7 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
 
   select::Select *operation_mode_select_{nullptr};
 
-  uint16_t char_handle_;
+  uint16_t char_handle_{0};
   std::vector<uint8_t> frame_buffer_;
   uint32_t last_frame_timestamp_ = 0;
 
