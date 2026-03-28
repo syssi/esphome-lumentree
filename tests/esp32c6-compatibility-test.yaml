@@ -4,6 +4,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${name}
 
 esp32:
   board: esp32-c6-devkitc-1
