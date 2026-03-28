@@ -68,105 +68,105 @@ binary_sensor:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     grid_connected:
-      name: "${name} grid connected"
+      name: "grid connected"
     battery_connected:
-      name: "${name} battery connected"
+      name: "battery connected"
     pv2_support:
-      name: "${name} pv2 support"
+      name: "pv2 support"
 
 sensor:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     battery_voltage:
-      name: "${name} battery voltage"
+      name: "battery voltage"
     battery_current:
-      name: "${name} battery current"
+      name: "battery current"
     battery_power:
-      name: "${name} battery power"
+      name: "battery power"
     battery_soc:
-      name: "${name} battery state of charge"
+      name: "battery state of charge"
     ac_output_voltage:
-      name: "${name} ac output voltage"
+      name: "ac output voltage"
     ac_input_voltage:
-      name: "${name} ac input voltage"
+      name: "ac input voltage"
     ac_output_frequency:
-      name: "${name} ac output frequency"
+      name: "ac output frequency"
     ac_input_frequency:
-      name: "${name} ac input frequency"
+      name: "ac input frequency"
     ac_power:
-      name: "${name} ac power"
+      name: "ac power"
     pv_voltage:
-      name: "${name} pv voltage"
+      name: "pv voltage"
     pv_power:
-      name: "${name} pv power"
+      name: "pv power"
     grid_power:
-      name: "${name} grid power"
+      name: "grid power"
     load_power:
-      name: "${name} load power"
+      name: "load power"
     device_temperature:
-      name: "${name} device temperature"
+      name: "device temperature"
     pv2_voltage:
-      name: "${name} pv2 voltage"
+      name: "pv2 voltage"
     pv2_power:
-      name: "${name} pv2 power"
+      name: "pv2 power"
     device_type_image:
-      name: "${name} device type image"
+      name: "device type image"
     battery_status:
-      name: "${name} battery status"
+      name: "battery status"
     grid_connection_status:
-      name: "${name} grid connection status"
+      name: "grid connection status"
     device_type:
-      name: "${name} device type"
+      name: "device type"
     device_power_rating_code:
-      name: "${name} device power rating code"
+      name: "device power rating code"
     device_power_rating:
-      name: "${name} device power rating"
+      name: "device power rating"
     ac_output_apparent_power:
-      name: "${name} ac output apparent power"
+      name: "ac output apparent power"
     grid_ct_power:
-      name: "${name} grid ct power"
+      name: "grid ct power"
     today_pv_production:
-      name: "${name} today pv production"
+      name: "today pv production"
     today_essential_load:
-      name: "${name} today essential load"
+      name: "today essential load"
     today_total_consumption:
-      name: "${name} today total consumption"
+      name: "today total consumption"
     today_grid_consumption:
-      name: "${name} today grid consumption"
+      name: "today grid consumption"
     today_battery_charging:
-      name: "${name} today battery charging"
+      name: "today battery charging"
     today_battery_discharge:
-      name: "${name} today battery discharge"
+      name: "today battery discharge"
     grid_export:
-      name: "${name} grid export"
+      name: "grid export"
 
 text_sensor:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     serial_number:
-      name: "${name} serial number"
+      name: "serial number"
     operation_mode:
-      name: "${name} operation mode"
+      name: "operation mode"
     device_model:
-      name: "${name} device model"
+      name: "device model"
 
 select:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     operation_mode:
-      name: "${name} operation mode"
+      name: "operation mode"
 
 switch:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     ac_charging:
-      name: "${name} ac charging"
+      name: "ac charging"
     output:
-      name: "${name} output"
+      name: "output"
 
   - platform: ble_client
     ble_client_id: client0
-    name: "${name} enable bluetooth connection"
+    name: "enable bluetooth connection"
     id: ble_client_switch0
 
 
@@ -174,19 +174,19 @@ button:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     battery_settings_reset:
-      name: "${name} battery settings reset"
+      name: "battery settings reset"
 
 number:
   - platform: lumentree_ble
     lumentree_ble_id: inverter0
     power_output_setting:
-      name: "${name} power output setting"
+      name: "power output setting"
     equalization_voltage_setting:
-      name: "${name} equalization voltage setting"
+      name: "equalization voltage setting"
     charging_target_voltage_setting:
-      name: "${name} charging target voltage setting"
+      name: "charging target voltage setting"
     float_charge_voltage_setting:
-      name: "${name} float charge voltage setting"
+      name: "float charge voltage setting"
     battery_capacity_setting:
-      name: "${name} battery capacity setting"
+      name: "battery capacity setting"
       unit_of_measurement: "Ah"
