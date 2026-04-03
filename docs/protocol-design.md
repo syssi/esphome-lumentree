@@ -86,7 +86,7 @@ For comprehensive data collection, use a multi-request approach:
 
 **Command Format:**
 - `01`: Slave address (always 1)
-- `03`: Function code (Read Holding Registers) 
+- `03`: Function code (Read Holding Registers)
 - `00 XX`: Start register address (16-bit big-endian)
 - `00 XX`: Register count (16-bit big-endian)
 - CRC: MODBUS CRC16 checksum (little-endian)

@@ -76,7 +76,7 @@
 <<< 01:04:d0:00:96:00:5a:00:04:00:00:00:5b:00:25:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:02:00:03:00:06:00:09:00:0e:00:21:00:41:00:66:00:91:00:a4:00:e0:01:0d:01:4c:01:8e:01:c9:02:39:02:e5:03:30:03:4a:03:38:03:77:01:68:02:39:04:45:04:8a:04:b2:04:fd:02:46:05:d4:06:34:06:86:03:ac:08:f3:05:87:04:c2:04:0a:03:c1:03:cd:03:e2:04:06:04:5f:28:3c
 # Combined response (208 bytes): First 8 registers are today's totals:
 # - Reg 0: PV Generation today = 0096 (15.0 kWh)
-# - Reg 1: Essential Load today = 005A (9.0 kWh) 
+# - Reg 1: Essential Load today = 005A (9.0 kWh)
 # - Reg 2: Grid Consumption today = 0004 (0.4 kWh)
 # - Reg 3: Total Consumption today = 0000 (0.0 kWh)
 # - Reg 4: Battery Charging today = 005B (9.1 kWh)
@@ -93,7 +93,7 @@
 # PV generation data: Registers 200-295 (96 values) for final 8 hours - declining to zero at night
 
 # ======================================================================
-# ADDITIONAL CHART DATA RANGES 
+# ADDITIONAL CHART DATA RANGES
 # Extended chart data for different energy categories
 # ======================================================================
 
@@ -129,7 +129,7 @@
 <<< 01:04:3e:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:a1:ac
 # Fourth monthly range: All zeros
 
->>> 01:04:06:28:00:1f:31:42     # Read Input Registers: Device=01, Function=04, Start=0628 (1576), Count=001F (31), CRC=3142  
+>>> 01:04:06:28:00:1f:31:42     # Read Input Registers: Device=01, Function=04, Start=0628 (1576), Count=001F (31), CRC=3142
 <<< 01:04:3e:00:84:00:70:00:4d:00:7f:00:47:00:60:00:5a:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:12:c1
 # Fifth monthly range: First 7 values populated
 
@@ -221,7 +221,7 @@
 >>> 01:10:00:a5:00:01:02:00:00:be:a5     # Write Multiple Registers: Device=01, Function=10, Start=00A5 (165), Count=0001, ByteCount=02, Data=0000, CRC=BEA5
 <<< 01:10:00:a5:00:01:11:ea             # Write Response: Success
 
->>> 01:10:00:a5:00:01:02:00:01:7f:65     # Write Multiple Registers: Device=01, Function=10, Start=00A5 (165), Count=0001, ByteCount=02, Data=0001, CRC=7F65  
+>>> 01:10:00:a5:00:01:02:00:01:7f:65     # Write Multiple Registers: Device=01, Function=10, Start=00A5 (165), Count=0001, ByteCount=02, Data=0001, CRC=7F65
 <<< 01:10:00:a5:00:01:11:ea             # Write Response: Success
 
 >>> 01:10:00:a7:00:01:02:00:01:7e:87     # Write Multiple Registers: Device=01, Function=10, Start=00A7 (167), Count=0001, ByteCount=02, Data=0001, CRC=7E87
@@ -242,7 +242,7 @@
 >>> 01:10:00:a0:00:03:06:19:08:07:11:16:2b:1c:c4     # Write Multiple Registers: Device=01, Function=10, Start=00A0 (160), Count=0003, ByteCount=06, Data=19080711162B, CRC=1CC4
 <<< 01:10:00:a0:00:03:80:2a             # Write Response: Success - Time synchronization (setting RTC to 2019-08-07 11:16:43)
 
->>> 01:10:00:96:00:01:02:00:00:bb:66     # Write Multiple Registers: Device=01, Function=10, Start=0096 (150), Count=0001, ByteCount=02, Data=0000, CRC=BB66  
+>>> 01:10:00:96:00:01:02:00:00:bb:66     # Write Multiple Registers: Device=01, Function=10, Start=0096 (150), Count=0001, ByteCount=02, Data=0000, CRC=BB66
 <<< 01:10:00:96:00:01:e1:e5             # Write Response: Success
 
 >>> 01:10:00:96:00:01:02:00:01:7a:a6     # Write Multiple Registers: Device=01, Function=10, Start=0096 (150), Count=0001, ByteCount=02, Data=0001, CRC=7AA6
@@ -277,7 +277,7 @@
 >>> 01:10:00:87:00:01:02:00:01:79:e7     # Write Multiple Registers: Device=01, Function=10, Start=0087 (135), Count=0001, ByteCount=02, Data=0001, CRC=79E7
 <<< 01:10:00:87:00:01:b1:e0             # Write Response: Success
 
->>> 01:03:00:7b:00:54:34:2c     # Read Holding Registers: Device=01, Function=03, Start=007B (123), Count=0054 (84), CRC=342C  
+>>> 01:03:00:7b:00:54:34:2c     # Read Holding Registers: Device=01, Function=03, Start=007B (123), Count=0054 (84), CRC=342C
 <<< 01:03:a8:00:00:00:00:00:01:00:00:00:00:00:00:00:00:01:67:00:01:00:00:00:01:00:00:00:01:00:00:00:00:08:fc:09:37:00:00:05:32:00:00:00:3c:00:14:00:38:00:34:00:00:00:5a:00:3c:00:01:00:00:00:00:15:e0:13:24:15:e0:14:50:00:64:00:00:00:00:19:08:07:11:17:39:00:00:00:00:00:01:00:01:00:00:00:01:00:00:00:00:00:00:00:00:05:32:06:a4:06:a4:09:37:00:35:00:34:07:d0:17:6f:07:d0:09:c4:03:e8:05:dc:00:00:14:f0:10:7c:00:5f:00:5f:00:62:14:bc:00:24:00:dd:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:19:b8
 # Another configuration block: 168 bytes (84 registers)
 
@@ -316,15 +316,15 @@
 
 # ======================================================================
 # SUMMARY OF COMMUNICATION PATTERNS OBSERVED:
-# 
+#
 # 1. System Status (0x03): Registers 0-94 (95 registers) - Continuous monitoring
-# 2. Daily Charts (0x04): 
+# 2. Daily Charts (0x04):
 #    - PV Generation: 0-287 (288 values, 3 calls of 96 each + initial 104)
-#    - Essential Power: 296-583 (288 values, 3 calls of 96 each)  
+#    - Essential Power: 296-583 (288 values, 3 calls of 96 each)
 #    - Grid Power: 584-871 (288 values, 3 calls of 96 each)
 #    - Home Load: 872-1159 (288 values, 3 calls of 96 each)
 # 3. Monthly Data (0x04): Various ranges with 31 registers each
-# 4. Yearly Data (0x04): Various ranges with 12 registers each  
+# 4. Yearly Data (0x04): Various ranges with 12 registers each
 # 5. Historical Multi-Year (0x04):
 #    - Years List: 1928-1943 (16 registers)
 #    - Annual Data: 1736-1896 (32 registers each category)
