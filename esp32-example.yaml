@@ -746,4 +746,3 @@ button:
         - lambda: |-
             auto cmd = esphome::modbus_controller::ModbusCommandItem::create_write_multiple_command(id(lumentree0), 100, 5, {0, 0, 0, 0, 0});
             id(lumentree0)->queue_command(cmd);
-
