@@ -9,8 +9,6 @@
 #define ADDR_STR(x) (x).c_str()
 #endif
 
-#ifdef USE_ESP32
-
 namespace esphome::lumentree_ble {
 
 static const char *const TAG = "lumentree_ble";
@@ -41,8 +39,10 @@ static std::string format_unknown_device(uint16_t device_type, uint16_t power_ra
   return buf;
 }
 
+#ifdef USE_ESP32
 static const uint16_t LUMENTREE_SERVICE_UUID = 0xFFE0;
 static const uint16_t LUMENTREE_NOTIFY_CHARACTERISTIC_UUID = 0xFFE1;
+#endif
 
 static const uint8_t LUMENTREE_MODBUS_DEVICE_ADDR = 0x01;
 static const uint8_t LUMENTREE_MODBUS_FUNCTION_READ = 0x03;
@@ -51,6 +51,7 @@ static const uint8_t LUMENTREE_MODBUS_FUNCTION_READ_INPUT = 0x04;
 static const uint8_t MAX_RESPONSE_SIZE = 255;
 static const uint32_t FRAME_TIMEOUT_MS = 5000;
 
+#ifdef USE_ESP32
 void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t gattc_if,
                                        esp_ble_gattc_cb_param_t *param) {
   switch (event) {
@@ -105,6 +106,21 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
       break;
   }
 }
+
+void LumentreeBle::update() {
+  if (this->node_state != esp32_ble_tracker::ClientState::ESTABLISHED) {
+    ESP_LOGW(TAG, "[%s] Not connected", ADDR_STR(this->parent_->address_str()));
+    return;
+  }
+
+  // Reset request sequence and start with system status
+  this->current_request_type_ = REQUEST_SYSTEM_STATUS;
+  ESP_LOGD(TAG, "[%s] Starting register data requests", ADDR_STR(this->parent_->address_str()));
+  this->send_next_request_();
+}
+#else
+void LumentreeBle::update() {}
+#endif  // USE_ESP32
 
 void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   uint32_t now = millis();
@@ -219,18 +235,7 @@ void LumentreeBle::dump_config() {
   LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
 }
 
-void LumentreeBle::update() {
-  if (this->node_state != esp32_ble_tracker::ClientState::ESTABLISHED) {
-    ESP_LOGW(TAG, "[%s] Not connected", ADDR_STR(this->parent_->address_str()));
-    return;
-  }
-
-  // Reset request sequence and start with system status
-  this->current_request_type_ = REQUEST_SYSTEM_STATUS;
-  ESP_LOGD(TAG, "[%s] Starting register data requests", ADDR_STR(this->parent_->address_str()));
-  this->send_next_request_();
-}
-
+#ifdef USE_ESP32
 void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   std::vector<uint8_t> frame = payload;
 
@@ -248,7 +253,11 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
     ESP_LOGW(TAG, "[%s] Error sending command, status=%d", ADDR_STR(this->parent_->address_str()), status);
   }
 }
+#else
+void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {}
+#endif  // USE_ESP32
 
+#ifdef USE_ESP32
 void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uint16_t register_count) {
   std::vector<uint8_t> payload;
   payload.push_back(LUMENTREE_MODBUS_DEVICE_ADDR);
@@ -263,6 +272,9 @@ void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uin
 
   this->send_command(payload);
 }
+#else
+void LumentreeBle::read_registers(uint8_t function, uint16_t start_register, uint16_t register_count) {}
+#endif  // USE_ESP32
 
 void LumentreeBle::decode_(const std::vector<uint8_t> &data) {
   if (data.size() < 3) {
@@ -313,9 +325,11 @@ void LumentreeBle::decode_(const std::vector<uint8_t> &data) {
   this->current_request_type_ = static_cast<RequestType>(this->current_request_type_ + 1);
 
   // Send next request after a short delay
+#ifdef USE_ESP32
   if (this->current_request_type_ < REQUEST_COMPLETE) {
     this->set_timeout("next_request", 100, [this]() { this->send_next_request_(); });
   }
+#endif
 }
 
 void LumentreeBle::decode_system_status_registers_(const std::vector<uint8_t> &data) {
@@ -635,6 +649,7 @@ std::string LumentreeBle::operation_mode_to_string_(uint16_t mode) {
   }
 }
 
+#ifdef USE_ESP32
 void LumentreeBle::send_next_request_() {
   switch (this->current_request_type_) {
     case REQUEST_SYSTEM_STATUS:
@@ -658,7 +673,11 @@ void LumentreeBle::send_next_request_() {
       break;
   }
 }
+#else
+void LumentreeBle::send_next_request_() {}
+#endif  // USE_ESP32
 
+#ifdef USE_ESP32
 void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
   ESP_LOGI(TAG, "Writing register 0x%02X with value 0x%04X", register_address, value);
 
@@ -695,6 +714,10 @@ void LumentreeBle::write_multiple_registers(uint8_t start_register, const std::v
 
   this->send_command(payload);
 }
+#else
+void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {}
+void LumentreeBle::write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values) {}
+#endif  // USE_ESP32
 
 float LumentreeBle::power_rating_code_to_watts_(uint16_t code) {
   switch (code) {
@@ -762,5 +785,3 @@ std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t 
 }
 
 }  // namespace esphome::lumentree_ble
-
-#endif
