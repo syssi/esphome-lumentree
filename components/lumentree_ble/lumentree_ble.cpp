@@ -11,8 +11,7 @@
 
 #ifdef USE_ESP32
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 static const char *const TAG = "lumentree_ble";
 
@@ -762,7 +761,6 @@ std::string LumentreeBle::generate_device_model_(uint16_t device_type, uint16_t 
   return format_unknown_device(device_type, power_rating, light_engine ? 1 : 0);
 }
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble
 
 #endif

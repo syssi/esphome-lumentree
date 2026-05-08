@@ -4,8 +4,7 @@
 #include "esphome/core/component.h"
 #include "esphome/components/number/number.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 class LumentreeBle;
 class LumentreeNumber : public number::Number, public Component {
@@ -26,5 +25,4 @@ class LumentreeNumber : public number::Number, public Component {
   uint8_t length_;
 };
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble

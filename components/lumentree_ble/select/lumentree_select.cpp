@@ -1,8 +1,7 @@
 #include "lumentree_select.h"
 #include "esphome/core/log.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 static const char *const TAG = "lumentree_ble.select";
 
@@ -22,5 +21,4 @@ void LumentreeSelect::control(const std::string &value) {
   }
 }
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble

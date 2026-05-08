@@ -4,8 +4,7 @@
 #include "esphome/core/component.h"
 #include "esphome/components/button/button.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 class LumentreeBle;
 class LumentreeButton : public button::Button, public Component {
@@ -22,5 +21,4 @@ class LumentreeButton : public button::Button, public Component {
   uint8_t holding_register_;
 };
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble
