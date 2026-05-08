@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/application.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 static const char *const TAG = "lumentree_ble.number";
 
@@ -13,5 +12,4 @@ void LumentreeNumber::control(float value) {
   this->parent_->write_register(this->holding_register_, (uint16_t) (value / this->factor_));
 }
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble

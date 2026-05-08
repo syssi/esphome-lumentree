@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/application.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 static const char *const TAG = "lumentree_ble.switch";
 
@@ -13,5 +12,4 @@ void LumentreeSwitch::write_state(bool state) {
   this->parent_->write_register(this->holding_register_, state ? 0x0001 : 0x0000);
 }
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble

@@ -5,8 +5,7 @@
 #include "esphome/components/select/select.h"
 #include "../lumentree_ble.h"
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 class LumentreeSelect : public select::Select, public Component {
  public:
@@ -23,5 +22,4 @@ class LumentreeSelect : public select::Select, public Component {
   std::map<std::string, uint16_t> option_mappings_;
 };
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble

@@ -15,8 +15,7 @@
 
 #include <esp_gattc_api.h>
 
-namespace esphome {
-namespace lumentree_ble {
+namespace esphome::lumentree_ble {
 
 namespace espbt = esphome::esp32_ble_tracker;
 
@@ -238,7 +237,6 @@ class LumentreeBle : public esphome::ble_client::BLEClientNode, public PollingCo
   std::string generate_device_model_(uint16_t device_type, uint16_t power_rating, bool light_engine);
 };
 
-}  // namespace lumentree_ble
-}  // namespace esphome
+}  // namespace esphome::lumentree_ble
 
 #endif
