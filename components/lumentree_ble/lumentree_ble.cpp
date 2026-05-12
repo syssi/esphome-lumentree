@@ -127,7 +127,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
 
   // Check for frame timeout - clear stale data
   if (!this->frame_buffer_.empty() && (now - this->last_frame_timestamp_) > FRAME_TIMEOUT_MS) {
-    ESP_LOGW(TAG, "Frame timeout (%dms), clearing stale buffer (%d bytes)", now - this->last_frame_timestamp_,
+    ESP_LOGW(TAG, "Frame timeout (%dms), clearing stale buffer (%zu bytes)", now - this->last_frame_timestamp_,
              this->frame_buffer_.size());
     this->frame_buffer_.clear();
   }
@@ -142,7 +142,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   if (length >= 2 && data[0] == LUMENTREE_MODBUS_DEVICE_ADDR &&
       (data[1] == LUMENTREE_MODBUS_FUNCTION_READ || data[1] == LUMENTREE_MODBUS_FUNCTION_READ_INPUT)) {
     if (!this->frame_buffer_.empty()) {
-      ESP_LOGW(TAG, "New MODBUS frame detected, discarding incomplete frame (%d bytes)", this->frame_buffer_.size());
+      ESP_LOGW(TAG, "New MODBUS frame detected, discarding incomplete frame (%zu bytes)", this->frame_buffer_.size());
     }
     this->frame_buffer_.clear();
   }
@@ -152,7 +152,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
 
   // Check if we have enough data for a MODBUS response header
   if (this->frame_buffer_.size() < 5) {
-    ESP_LOGVV(TAG, "Frame buffer too small (%d bytes), waiting for more data", this->frame_buffer_.size());
+    ESP_LOGVV(TAG, "Frame buffer too small (%zu bytes), waiting for more data", this->frame_buffer_.size());
     return;
   }
 
@@ -169,7 +169,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   uint16_t expected_length = 3 + byte_count + 2;  // header + data + CRC
 
   if (this->frame_buffer_.size() < expected_length) {
-    ESP_LOGVV(TAG, "Waiting for more data (%d/%d bytes)", this->frame_buffer_.size(), expected_length);
+    ESP_LOGVV(TAG, "Waiting for more data (%zu/%d bytes)", this->frame_buffer_.size(), expected_length);
     return;
   }
 
@@ -693,7 +693,7 @@ void LumentreeBle::write_register(uint8_t register_address, uint16_t value) {
 }
 
 void LumentreeBle::write_multiple_registers(uint8_t start_register, const std::vector<uint16_t> &values) {
-  ESP_LOGI(TAG, "Writing %d registers starting at 0x%02X", values.size(), start_register);
+  ESP_LOGI(TAG, "Writing %zu registers starting at 0x%02X", values.size(), start_register);
 
   uint8_t register_count = values.size();
   uint8_t byte_count = register_count * 2;
