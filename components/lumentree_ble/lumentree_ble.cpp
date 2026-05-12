@@ -127,7 +127,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
 
   // Check for frame timeout - clear stale data
   if (!this->frame_buffer_.empty() && (now - this->last_frame_timestamp_) > FRAME_TIMEOUT_MS) {
-    ESP_LOGW(TAG, "Frame timeout (%dms), clearing stale buffer (%d bytes)", now - this->last_frame_timestamp_,
+    ESP_LOGW(TAG, "Frame timeout (%dms), clearing stale buffer (%zu bytes)", now - this->last_frame_timestamp_,
              this->frame_buffer_.size());
     this->frame_buffer_.clear();
   }
