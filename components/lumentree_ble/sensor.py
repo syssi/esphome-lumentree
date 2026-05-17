@@ -61,203 +61,203 @@ CONF_GRID_EXPORT = "grid_export"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
 
-SENSORS = {
-    CONF_BATTERY_VOLTAGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=2,
-        device_class=DEVICE_CLASS_VOLTAGE,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_BATTERY_CURRENT: sensor.sensor_schema(
-        unit_of_measurement=UNIT_AMPERE,
-        accuracy_decimals=2,
-        device_class=DEVICE_CLASS_CURRENT,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_BATTERY_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_BATTERY_SOC: sensor.sensor_schema(
-        unit_of_measurement=UNIT_PERCENT,
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_AC_OUTPUT_VOLTAGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_VOLTAGE,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_AC_INPUT_VOLTAGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_VOLTAGE,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_AC_OUTPUT_FREQUENCY: sensor.sensor_schema(
-        unit_of_measurement=UNIT_HERTZ,
-        accuracy_decimals=2,
-        device_class=DEVICE_CLASS_FREQUENCY,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_AC_INPUT_FREQUENCY: sensor.sensor_schema(
-        unit_of_measurement=UNIT_HERTZ,
-        accuracy_decimals=2,
-        device_class=DEVICE_CLASS_FREQUENCY,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_AC_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_PV_VOLTAGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_VOLTAGE,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_PV_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_GRID_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_LOAD_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_DEVICE_TEMPERATURE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_CELSIUS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_TEMPERATURE,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_PV2_VOLTAGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_VOLTAGE,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_PV2_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_DEVICE_TYPE_IMAGE: sensor.sensor_schema(
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_BATTERY_STATUS: sensor.sensor_schema(
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_GRID_CONNECTION_STATUS: sensor.sensor_schema(
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_DEVICE_TYPE: sensor.sensor_schema(
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_DEVICE_POWER_RATING_CODE: sensor.sensor_schema(
-        accuracy_decimals=0,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_DEVICE_POWER_RATING: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
-    ),
-    CONF_AC_OUTPUT_APPARENT_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_VOLT_AMPS,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_GRID_CT_POWER: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
-    CONF_TODAY_PV_PRODUCTION: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_TODAY_ESSENTIAL_LOAD: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_TODAY_TOTAL_CONSUMPTION: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_TODAY_GRID_CONSUMPTION: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_TODAY_BATTERY_CHARGING: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_TODAY_BATTERY_DISCHARGE: sensor.sensor_schema(
-        unit_of_measurement=UNIT_KILOWATT_HOURS,
-        accuracy_decimals=1,
-        device_class=DEVICE_CLASS_ENERGY,
-        state_class=STATE_CLASS_TOTAL_INCREASING,
-    ),
-    CONF_GRID_EXPORT: sensor.sensor_schema(
-        unit_of_measurement=UNIT_WATT,
-        accuracy_decimals=0,
-        device_class=DEVICE_CLASS_POWER,
-        state_class=STATE_CLASS_MEASUREMENT,
-    ),
+SENSOR_DEFS = {
+    CONF_BATTERY_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_CURRENT: {
+        "unit_of_measurement": UNIT_AMPERE,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_CURRENT,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_BATTERY_SOC: {
+        "unit_of_measurement": UNIT_PERCENT,
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_AC_OUTPUT_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_AC_INPUT_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_AC_OUTPUT_FREQUENCY: {
+        "unit_of_measurement": UNIT_HERTZ,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_FREQUENCY,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_AC_INPUT_FREQUENCY: {
+        "unit_of_measurement": UNIT_HERTZ,
+        "accuracy_decimals": 2,
+        "device_class": DEVICE_CLASS_FREQUENCY,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_AC_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_GRID_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_LOAD_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_DEVICE_TEMPERATURE: {
+        "unit_of_measurement": UNIT_CELSIUS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_TEMPERATURE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_PV2_VOLTAGE: {
+        "unit_of_measurement": UNIT_VOLT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_VOLTAGE,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_PV2_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_DEVICE_TYPE_IMAGE: {
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_BATTERY_STATUS: {
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_GRID_CONNECTION_STATUS: {
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_DEVICE_TYPE: {
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_DEVICE_POWER_RATING_CODE: {
+        "accuracy_decimals": 0,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_DEVICE_POWER_RATING: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+        "entity_category": ENTITY_CATEGORY_DIAGNOSTIC,
+    },
+    CONF_AC_OUTPUT_APPARENT_POWER: {
+        "unit_of_measurement": UNIT_VOLT_AMPS,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_GRID_CT_POWER: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
+    CONF_TODAY_PV_PRODUCTION: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_TODAY_ESSENTIAL_LOAD: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_TODAY_TOTAL_CONSUMPTION: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_TODAY_GRID_CONSUMPTION: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_TODAY_BATTERY_CHARGING: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_TODAY_BATTERY_DISCHARGE: {
+        "unit_of_measurement": UNIT_KILOWATT_HOURS,
+        "accuracy_decimals": 1,
+        "device_class": DEVICE_CLASS_ENERGY,
+        "state_class": STATE_CLASS_TOTAL_INCREASING,
+    },
+    CONF_GRID_EXPORT: {
+        "unit_of_measurement": UNIT_WATT,
+        "accuracy_decimals": 0,
+        "device_class": DEVICE_CLASS_POWER,
+        "state_class": STATE_CLASS_MEASUREMENT,
+    },
 }
 
 CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
     {
-        cv.Optional(sensor_name): sensor_config
-        for sensor_name, sensor_config in SENSORS.items()
+        cv.Optional(key): sensor.sensor_schema(**kwargs)
+        for key, kwargs in SENSOR_DEFS.items()
     }
 )
 
 
 async def to_code(config):
     hub = await cg.get_variable(config[CONF_LUMENTREE_BLE_ID])
-    for sensor_name in SENSORS:
-        if sensor_name in config:
-            conf = config[sensor_name]
+    for key in SENSOR_DEFS:
+        if key in config:
+            conf = config[key]
             sens = await sensor.new_sensor(conf)
-            cg.add(getattr(hub, f"set_{sensor_name}_sensor")(sens))
+            cg.add(getattr(hub, f"set_{key}_sensor")(sens))

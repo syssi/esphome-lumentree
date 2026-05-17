@@ -22,31 +22,39 @@ class TestHubConstants:
         assert hub.CONF_LUMENTREE_BLE_ID == "lumentree_ble_id"
 
 
-class TestSensorLists:
-    def test_sensors_completeness(self):
-        assert "battery_voltage" in sensor.SENSORS
-        assert "battery_current" in sensor.SENSORS
-        assert "battery_power" in sensor.SENSORS
-        assert "battery_soc" in sensor.SENSORS
-        assert "pv_voltage" in sensor.SENSORS
-        assert "pv_power" in sensor.SENSORS
-        assert "grid_power" in sensor.SENSORS
-        assert "load_power" in sensor.SENSORS
-        assert "device_temperature" in sensor.SENSORS
-        assert "today_pv_production" in sensor.SENSORS
-        assert len(sensor.SENSORS) == 31
+class TestSensorDefs:
+    def test_sensor_defs_completeness(self):
+        assert "battery_voltage" in sensor.SENSOR_DEFS
+        assert "battery_current" in sensor.SENSOR_DEFS
+        assert "battery_power" in sensor.SENSOR_DEFS
+        assert "battery_soc" in sensor.SENSOR_DEFS
+        assert "pv_voltage" in sensor.SENSOR_DEFS
+        assert "pv_power" in sensor.SENSOR_DEFS
+        assert "grid_power" in sensor.SENSOR_DEFS
+        assert "load_power" in sensor.SENSOR_DEFS
+        assert "device_temperature" in sensor.SENSOR_DEFS
+        assert "today_pv_production" in sensor.SENSOR_DEFS
+        assert len(sensor.SENSOR_DEFS) == 31
 
     def test_sensor_keys_are_strings(self):
-        for key in sensor.SENSORS:
+        for key in sensor.SENSOR_DEFS:
             assert isinstance(key, str)
 
+    def test_sensor_defs_values_are_dicts(self):
+        for key, kwargs in sensor.SENSOR_DEFS.items():
+            assert isinstance(kwargs, dict), f"{key} value must be a kwargs dict"
 
-class TestBinarySensorConstants:
-    def test_binary_sensors_dict(self):
-        assert binary_sensor.CONF_GRID_CONNECTED in binary_sensor.BINARY_SENSORS
-        assert binary_sensor.CONF_BATTERY_CONNECTED in binary_sensor.BINARY_SENSORS
-        assert binary_sensor.CONF_PV2_SUPPORT in binary_sensor.BINARY_SENSORS
-        assert len(binary_sensor.BINARY_SENSORS) == 3
+
+class TestBinarySensorDefs:
+    def test_binary_sensor_defs_completeness(self):
+        assert binary_sensor.CONF_GRID_CONNECTED in binary_sensor.BINARY_SENSOR_DEFS
+        assert binary_sensor.CONF_BATTERY_CONNECTED in binary_sensor.BINARY_SENSOR_DEFS
+        assert binary_sensor.CONF_PV2_SUPPORT in binary_sensor.BINARY_SENSOR_DEFS
+        assert len(binary_sensor.BINARY_SENSOR_DEFS) == 3
+
+    def test_binary_sensor_defs_values_are_dicts(self):
+        for key, kwargs in binary_sensor.BINARY_SENSOR_DEFS.items():
+            assert isinstance(kwargs, dict), f"{key} value must be a kwargs dict"
 
 
 class TestTextSensorConstants:
