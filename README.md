@@ -45,6 +45,9 @@ wifi_password: MY_WIFI_PASSWORD
 mqtt_host: MY_MQTT_HOST
 mqtt_username: MY_MQTT_USERNAME
 mqtt_password: MY_MQTT_PASSWORD
+
+# Required for the BLE example only. Use the MAC address of your Lumentree inverter.
+inverter0_mac_address: MY_INVERTER_MAC_ADDRESS
 EOF
 
 # Validate the configuration, create a binary, upload it, and start logs

@@ -28,7 +28,7 @@ api:
 esp32_ble_tracker:
 
 ble_client:
-  - mac_address: "AA:BB:CC:DD:EE:FF"
+  - mac_address: !secret inverter0_mac_address
     id: client0
 
 lumentree_ble:
