@@ -19,6 +19,7 @@ external_components:
 wifi:
   ssid: "MySSID"
   password: "MyPassword"
+  min_auth_mode: WPA2
 
 logger:
 
