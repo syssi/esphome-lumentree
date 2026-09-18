@@ -493,12 +493,14 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
         ESP_LOGI(TAG, "Target Voltage 6: %.2f V", register_value * 0.01f);
         break;
       case 120:  // Charge from AC
-        ESP_LOGI(TAG, "Charge from AC: %s", register_value == 1 ? "Enabled" : "Disabled");
+        ESP_LOGI(TAG, "Charge from AC: %s",
+                 register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Disabled"));
         // Sync AC charging switch
         this->publish_state_(this->ac_charging_switch_, register_value == 1);
         break;
       case 123:  // AC Output Frequency
-        ESP_LOGI(TAG, "AC Output Frequency: %s", register_value == 0 ? "50Hz" : "60Hz");
+        ESP_LOGI(TAG, "AC Output Frequency: %s",
+                 register_value == 0 ? LOG_STR_LITERAL("50Hz") : LOG_STR_LITERAL("60Hz"));
         break;
       case 125:  // AC Output Voltage
         ESP_LOGI(TAG, "AC Output Voltage Setting: %d V", register_value);
@@ -525,7 +527,8 @@ void LumentreeBle::decode_battery_config_registers_(const std::vector<uint8_t> &
         ESP_LOGI(TAG, "Work Mode: %d", register_value);
         break;
       case 152:  // Starter Generator
-        ESP_LOGI(TAG, "Starter Generator: %s", register_value == 1 ? "Enabled" : "Disabled");
+        ESP_LOGI(TAG, "Starter Generator: %s",
+                 register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Disabled"));
         break;
       case 153:  // Target Voltage 1
         ESP_LOGI(TAG, "Target Voltage 1: %.2f V", register_value * 0.01f);
@@ -569,22 +572,24 @@ void LumentreeBle::decode_system_control_registers_(const std::vector<uint8_t> &
         ESP_LOGI(TAG, "Real Time Clock: %d (Unix timestamp)", register_value);
         break;
       case 163:  // Sleep Mode Set
-        ESP_LOGI(TAG, "Sleep Mode: %s", register_value == 1 ? "Enabled" : "Disabled");
+        ESP_LOGI(TAG, "Sleep Mode: %s", register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Disabled"));
         break;
       case 165:  // Overload Auto Start
-        ESP_LOGI(TAG, "Overload Auto Start: %s", register_value == 1 ? "Enabled" : "Disabled");
+        ESP_LOGI(TAG, "Overload Auto Start: %s",
+                 register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Disabled"));
         break;
       case 166:  // Overtemperature Protection Auto
-        ESP_LOGI(TAG, "Overtemperature Protection Auto: %s", register_value == 1 ? "Enabled" : "Disabled");
+        ESP_LOGI(TAG, "Overtemperature Protection Auto: %s",
+                 register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Disabled"));
         break;
       case 167:  // Beep
-        ESP_LOGI(TAG, "Beep: %s", register_value == 1 ? "Enabled" : "Silent");
+        ESP_LOGI(TAG, "Beep: %s", register_value == 1 ? LOG_STR_LITERAL("Enabled") : LOG_STR_LITERAL("Silent"));
         break;
       case 168:  // Backlight
         ESP_LOGI(TAG, "Backlight: %d", register_value);
         break;
       case 170:  // Online Mode
-        ESP_LOGI(TAG, "Online Mode: %s", register_value == 1 ? "Online" : "Offline");
+        ESP_LOGI(TAG, "Online Mode: %s", register_value == 1 ? LOG_STR_LITERAL("Online") : LOG_STR_LITERAL("Offline"));
         // Sync output switch
         this->publish_state_(this->output_switch_, register_value == 1);
         break;
