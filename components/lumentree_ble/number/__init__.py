@@ -19,7 +19,10 @@ DEPENDENCIES = ["lumentree_ble"]
 
 CODEOWNERS = ["@syssi"]
 
-UNIT_AMPERE_HOUR = "Ah"
+try:
+    from esphome.components.const import UNIT_AMPERE_HOUR
+except ImportError:  # ESPHome < 2026.2.0
+    UNIT_AMPERE_HOUR = "Ah"
 
 DEFAULT_STEP = 1
 
