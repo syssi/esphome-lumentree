@@ -1,9 +1,14 @@
 #include "lumentree_select.h"
 #include "esphome/core/log.h"
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::lumentree_ble {
 
-static const char *const TAG = "lumentree_ble.select";
+ESPHOME_LOG_TAG(TAG, "lumentree_ble.select");
 
 void LumentreeSelect::dump_config() {
   LOG_SELECT("", "LumentreeBle Select", this);

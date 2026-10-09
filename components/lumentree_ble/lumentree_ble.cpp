@@ -9,9 +9,14 @@
 #define ADDR_STR(x) (x).c_str()
 #endif
 
+// Fallback for ESPHome < 2026.10.0
+#ifndef ESPHOME_LOG_TAG
+#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
+#endif
+
 namespace esphome::lumentree_ble {
 
-static const char *const TAG = "lumentree_ble";
+ESPHOME_LOG_TAG(TAG, "lumentree_ble");
 
 struct DeviceModel {
   uint16_t device_type;
