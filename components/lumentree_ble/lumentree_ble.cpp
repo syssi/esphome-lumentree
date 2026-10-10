@@ -11,6 +11,16 @@ namespace esphome::lumentree_ble {
 
 ESPHOME_LOG_TAG(TAG, "lumentree_ble");
 
+static constexpr size_t MAX_HEX_DUMP_BYTES = 100;
+
+static void log_hex_chunked(const char *tag, const uint8_t *data, size_t size) {
+  char buf[format_hex_pretty_size(100)];
+  for (size_t i = 0; i < size; i += 100) {
+    size_t len = std::min<size_t>(100, size - i);
+    ESP_LOGD(tag, "  %s", format_hex_pretty_to(buf, sizeof(buf), data + i, len, '.'));
+  }
+}
+
 struct DeviceModel {
   uint16_t device_type;
   uint16_t power_rating;
@@ -92,8 +102,9 @@ void LumentreeBle::gattc_event_handler(esp_gattc_cb_event_t event, esp_gatt_if_t
     }
     case ESP_GATTC_NOTIFY_EVT: {
       if (param->notify.handle == this->char_handle_) {
+        char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
         ESP_LOGVV(TAG, "[%s] Notification received: %s", this->parent_->address_str(),
-                  format_hex_pretty(param->notify.value, param->notify.value_len).c_str());  // NOLINT
+                  format_hex_pretty_to(hex_buf, param->notify.value, param->notify.value_len, '.'));
         this->assemble(param->notify.value, param->notify.value_len);
       }
       break;
@@ -179,7 +190,7 @@ void LumentreeBle::assemble(const uint8_t *data, uint16_t length) {
   }
 
   ESP_LOGI(TAG, "Register data frame received");
-  ESP_LOGD(TAG, "  %s", format_hex_pretty(&this->frame_buffer_.front(), this->frame_buffer_.size()).c_str());  // NOLINT
+  log_hex_chunked(TAG, this->frame_buffer_.data(), this->frame_buffer_.size());
 
   this->decode_(this->frame_buffer_);
   this->frame_buffer_.clear();
@@ -239,8 +250,9 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   frame.push_back(crc & 0xFF);
   frame.push_back((crc >> 8) & 0xFF);
 
+  char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
   ESP_LOGVV(TAG, "[%s] Command frame: %s", this->parent_->address_str(),
-            format_hex_pretty(frame).c_str());  // NOLINT
+            format_hex_pretty_to(hex_buf, frame, '.'));
 
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
                                          this->char_handle_, frame.size(), const_cast<uint8_t *>(frame.data()),

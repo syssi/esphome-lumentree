@@ -15,7 +15,7 @@ ESPHome component to monitor a Lumentree Solar Inverter via BLE
 
 ## Requirements
 
-* [ESPHome 2025.12.0 or higher](https://github.com/esphome/esphome/releases).
+* [ESPHome 2026.1.0 or higher](https://github.com/esphome/esphome/releases).
 * Generic ESP32 board
 
 ## Installation
