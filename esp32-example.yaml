@@ -8,6 +8,7 @@ esphome:
   name: ${name}
   friendly_name: ${name}
   comment: ${device_description}
+  min_version: 2026.9.0
   project:
     name: "syssi.esphome-lumentree"
     version: 1.3.0
@@ -53,7 +54,6 @@ modbus_controller:
   - id: lumentree0
     address: 0x01
     modbus_id: modbus0
-    command_throttle: 200ms
     update_interval: 10s
 
 time:
