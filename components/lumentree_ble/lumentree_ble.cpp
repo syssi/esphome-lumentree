@@ -251,8 +251,7 @@ void LumentreeBle::send_command(const std::vector<uint8_t> &payload) {
   frame.push_back((crc >> 8) & 0xFF);
 
   char hex_buf[format_hex_pretty_size(MAX_HEX_DUMP_BYTES)];
-  ESP_LOGVV(TAG, "[%s] Command frame: %s", this->parent_->address_str(),
-            format_hex_pretty_to(hex_buf, frame, '.'));
+  ESP_LOGVV(TAG, "[%s] Command frame: %s", this->parent_->address_str(), format_hex_pretty_to(hex_buf, frame, '.'));
 
   auto status = esp_ble_gattc_write_char(this->parent_->get_gattc_if(), this->parent_->get_conn_id(),
                                          this->char_handle_, frame.size(), const_cast<uint8_t *>(frame.data()),
