@@ -5,10 +5,14 @@ from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
+try:
+    from esphome.components.const import CONF_SERIAL_NUMBER
+except ImportError:  # ESPHome < 2026.11.0
+    CONF_SERIAL_NUMBER = "serial_number"
+
 DEPENDENCIES = ["lumentree_ble"]
 CODEOWNERS = ["@syssi"]
 
-CONF_SERIAL_NUMBER = "serial_number"
 CONF_OPERATION_MODE = "operation_mode"
 CONF_DEVICE_MODEL = "device_model"
 
