@@ -24,6 +24,11 @@ from esphome.const import (
 
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
 
+try:
+    from esphome.components.const import CONF_DEVICE_TYPE
+except ImportError:  # ESPHome < 2026.11.0
+    CONF_DEVICE_TYPE = "device_type"
+
 DEPENDENCIES = ["lumentree_ble"]
 CODEOWNERS = ["@syssi"]
 
@@ -46,7 +51,6 @@ CONF_PV2_POWER = "pv2_power"
 CONF_DEVICE_TYPE_IMAGE = "device_type_image"
 CONF_BATTERY_STATUS = "battery_status"
 CONF_GRID_CONNECTION_STATUS = "grid_connection_status"
-CONF_DEVICE_TYPE = "device_type"
 CONF_DEVICE_POWER_RATING_CODE = "device_power_rating_code"
 CONF_DEVICE_POWER_RATING = "device_power_rating"
 CONF_AC_OUTPUT_APPARENT_POWER = "ac_output_apparent_power"
