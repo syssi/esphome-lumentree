@@ -3,12 +3,12 @@ from esphome.components import select
 import esphome.config_validation as cv
 
 from .. import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
+from ..const import CONF_OPERATION_MODE
 
 DEPENDENCIES = ["lumentree_ble"]
 
 CODEOWNERS = ["@syssi"]
 
-CONF_OPERATION_MODE = "operation_mode"
 
 OPERATION_MODE_OPTIONS = {
     "Battery Mode": 0,
