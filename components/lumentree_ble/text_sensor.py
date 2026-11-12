@@ -4,6 +4,7 @@ import esphome.config_validation as cv
 from esphome.const import ENTITY_CATEGORY_DIAGNOSTIC
 
 from . import CONF_LUMENTREE_BLE_ID, LUMENTREE_BLE_COMPONENT_SCHEMA, lumentree_ble_ns
+from .const import CONF_OPERATION_MODE
 
 try:
     from esphome.components.const import CONF_SERIAL_NUMBER
@@ -13,7 +14,6 @@ except ImportError:  # ESPHome < 2026.11.0
 DEPENDENCIES = ["lumentree_ble"]
 CODEOWNERS = ["@syssi"]
 
-CONF_OPERATION_MODE = "operation_mode"
 CONF_DEVICE_MODEL = "device_model"
 
 LumentreeBle = lumentree_ble_ns.class_("LumentreeBle")
