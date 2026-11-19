@@ -240,6 +240,9 @@ void LumentreeBle::dump_config() {
   LOG_TEXT_SENSOR("  ", "Serial Number", this->serial_number_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Operation Mode", this->operation_mode_text_sensor_);
   LOG_TEXT_SENSOR("  ", "Device Model", this->device_model_text_sensor_);
+
+  LOG_SWITCH("", "AC charging", this->ac_charging_switch_);
+  LOG_SWITCH("", "Output", this->output_switch_);
 }
 
 #ifdef USE_ESP32
