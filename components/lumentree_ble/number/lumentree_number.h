@@ -14,7 +14,6 @@ class LumentreeNumber : public number::Number, public Component {
   void set_factor(float factor) { this->factor_ = factor; };
   void set_length(uint8_t length) { this->length_ = length; };
   void dump_config() override;
-  void loop() override {}
   float get_setup_priority() const override { return setup_priority::DATA; }
 
  protected:
