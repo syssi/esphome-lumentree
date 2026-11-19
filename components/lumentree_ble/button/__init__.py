@@ -16,9 +16,7 @@ BUTTONS = {
     CONF_BATTERY_SETTINGS_RESET: 100,
 }
 
-LumentreeButton = lumentree_ble_ns.class_(
-    "LumentreeButton", button.Button, cg.Component
-)
+LumentreeButton = lumentree_ble_ns.class_("LumentreeButton", button.Button)
 
 CONFIG_SCHEMA = LUMENTREE_BLE_COMPONENT_SCHEMA.extend(
     {
@@ -36,6 +34,5 @@ async def to_code(config):
         if key in config:
             conf = config[key]
             var = await button.new_button(conf)
-            await cg.register_component(var, conf)
             cg.add(var.set_parent(hub))
             cg.add(var.set_holding_register(address))

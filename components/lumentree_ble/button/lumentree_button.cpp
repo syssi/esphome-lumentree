@@ -1,16 +1,7 @@
 #include "lumentree_button.h"
-#include "esphome/core/log.h"
-
-// Fallback for ESPHome < 2026.10.0
-#ifndef ESPHOME_LOG_TAG
-#define ESPHOME_LOG_TAG(name, tag) static const char *const name = tag
-#endif
 
 namespace esphome::lumentree_ble {
 
-ESPHOME_LOG_TAG(TAG, "lumentree_ble.button");
-
-void LumentreeButton::dump_config() { LOG_BUTTON("", "LumentreeBle Button", this); }
 void LumentreeButton::press_action() {
   if (this->holding_register_ == 100) {
     // Battery Settings Reset: Write 5 zeros to registers 100-104
